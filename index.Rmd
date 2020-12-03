@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Manhattan Restaurants Reviews"
+author: "Tianqi Lou (tl3028), Liyuan Tang (lt2806), Weiyao Xie (wx2251), Heather Zhu (yz4042)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---

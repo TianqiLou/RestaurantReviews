@@ -1,1 +1,35 @@
 # Missing values
+First, we load the data and show the first couple lines here.
+```{r}
+restaurant_df <- read.csv(file = 'opentable.csv')
+
+head(restaurant_df)
+```
+Then, we check the number of NA's in each column. 
+
+```{r}
+colSums(is.na(restaurant_df))
+```
+There are 10 NA's in each review columns. To find out where they are, we plot the missing patterns in data by rows with `mi` package.
+
+```{r, message = FALSE}
+library(mi)
+
+x <- missing_data.frame(restaurant_df)
+
+image(x)
+```
+
+From the plot above, we can see that all 10 missing values are in the same rows, so we decided to remove these rows by using `na.omit()` function. And we check again to make sure there are no NA's in the dataset. 
+
+```{r}
+restaurant_df <- na.omit(restaurant_df)
+colSums(is.na(restaurant_df))
+```
+
+
+
+```{r}
+write.csv(restaurant_df, './restaurant.csv')
+```
+

@@ -3,14 +3,31 @@
 We'd like to order the data by `average_review` to see the general ranking of the restaurants.
 
 ```{r}
-data <- read.csv("restaurant.csv")
+data <- read.csv("restaurant.csv", encoding = "UTF-8")
 data <- data[order(data$average_review, decreasing = TRUE),]
-unique(data$average_review)
+data
 ```
-After we ordered the restaurant data by `average_review`, we found out that the first rows do not have actual ratings, so we need to find out what these rows are and what to do with them.
+```{r}
+
+data$name <- tolower(data$name)
+data$name<-sub("\\-.*", "", data$name)
+
+violations <- read.csv(file = 'restaurant_grades.csv', encoding = "UTF-8")
+
+violations$DBA <- tolower(violations$DBA)
+violations$DBA <- sub("\\(.*",'',violations$DBA)
+
+library(sqldf)
+
+violation_counts <- sqldf('select DBA,count(DBA) from violations group by DBA')
+
+sqldf('select * from data as d join violation_counts as v on d.name = v.DBA')
+```
+
 
 ```{r}
-data[data$average_review == "Booked 0 times today",]
+violations$DBA <- sub("\\(.*",'',violations$DBA)
 ```
-Since there are only two rows and these rows with invalid `average_review` columns also have invalid inputs in other columns, we decide to remove all these rows.
+
+
 

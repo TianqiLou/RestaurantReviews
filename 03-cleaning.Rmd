@@ -1,7 +1,7 @@
 # Missing values
 First, we load the data and show the first couple lines here.
 ```{r}
-restaurant_df <- read.csv(file = 'opentable.csv')
+restaurant_df <- read.csv(file = 'opentable.csv', encoding = "UTF-8")
 
 head(restaurant_df,3)
 ```
@@ -34,19 +34,28 @@ colSums(is.na(restaurant_df))
 
 
 ```{r}
-write.csv(restaurant_df, './restaurant.csv')
+write.csv(restaurant_df, './restaurant.csv', row.names=FALSE)
 ```
 
 We then check for NA's in our second dataset.
 
 ```{r}
-restaurant_grades = read.csv(file = 'Restaurant_Grades.csv')
+restaurant_grades = read.csv(file = 'Restaurant_Grades.csv', encoding = "UTF-8")
 
 head(restaurant_grades)
 ```
 ```{r}
+restaurant_grades[restaurant_grades==""] <- NA
 colSums(is.na(restaurant_grades))
 ```
 
-Since there is no NA's, we will keep the whole dataset.
+Since our dataset is large enough, we can delete these rows. Then double check.
 
+```{r}
+restaurant_grades <- na.omit(restaurant_grades)
+colSums(is.na(restaurant_grades))
+```       
+
+```{r}
+write.csv(restaurant_grades, './restaurant_grades.csv', row.names=FALSE)
+```

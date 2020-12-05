@@ -5,29 +5,31 @@ We'd like to order the data by `average_review` to see the general ranking of th
 ```{r}
 data <- read.csv("restaurant.csv", encoding = "UTF-8")
 data <- data[order(data$average_review, decreasing = TRUE),]
-data
+head(data)
 ```
+We'd like to join our datasets to see both the violations and the ratings. To accomplish that, we first convert all restaurants names to lower cases with `tolower()`, then strip symbols off on two datasets with `sub()` to create uniform syntax for names. After that, we used `sqldf` package to count the number of violations each restaurant has and join the two datasets together as our final dataset.
+
 ```{r}
 
 data$name <- tolower(data$name)
 data$name<-sub("\\-.*", "", data$name)
 
-violations <- read.csv(file = 'restaurant_grades.csv', encoding = "UTF-8")
+violations <- read.csv(file = 'violations.csv')
 
 violations$DBA <- tolower(violations$DBA)
 violations$DBA <- sub("\\(.*",'',violations$DBA)
 
 library(sqldf)
 
-violation_counts <- sqldf('select DBA,count(DBA) from violations group by DBA')
+violation_counts <- sqldf('select DBA,count(DBA) as violation_count from violations group by DBA')
 
-sqldf('select * from data as d join violation_counts as v on d.name = v.DBA')
+df <- sqldf('select * from data as d join violation_counts as v on d.name = v.DBA')
 ```
-
+We can take a glance at the final dataset.
 
 ```{r}
-violations$DBA <- sub("\\(.*",'',violations$DBA)
+df$DBA <- NULL
+
+head(df,3)
+write.csv(df, './finaldf.csv', row.names=FALSE)
 ```
-
-
-

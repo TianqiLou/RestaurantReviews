@@ -57,5 +57,5 @@ colSums(is.na(restaurant_grades))
 ```       
 
 ```{r}
-write.csv(restaurant_grades, './restaurant_grades.csv', row.names=FALSE)
+write.csv(restaurant_grades, './violations.csv', row.names=FALSE)
 ```

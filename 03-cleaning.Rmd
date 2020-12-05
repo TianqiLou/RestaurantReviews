@@ -12,12 +12,13 @@ colSums(is.na(restaurant_df))
 ```
 There are 10 NA's in each review columns. To find out where they are, we plot the missing patterns in data by rows with `mi` package.
 
-```{r, message = FALSE}
+```{r, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, results='hide',fig.keep='all'}
 library(mi)
 
-x <- missing_data.frame(restaurant_df)
+x <- invisible(missing_data.frame(restaurant_df))
 
 image(x)
+
 ```
 
 From the plot above, we can see that all 10 missing values are in the same rows, so we decided to remove these rows by using `na.omit()` function. And we check again to make sure there are no NA's in the dataset. 

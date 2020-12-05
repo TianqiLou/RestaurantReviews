@@ -33,7 +33,6 @@
   
 <link rel="prev" href="data-sources.html"/>
 <link rel="next" href="data-transformation.html"/>
-<script src="libs/header-attrs-2.4/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -52,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
 
@@ -97,43 +98,53 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="missing-values" class="section level1" number="3">
+<div id="missing-values" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Missing values</h1>
 <p>First, we load the data and show the first couple lines here.</p>
-<pre><code>##   X                         name food_review ambience_review value_review
-## 1 1               Cafe Du Soleil         4.2             4.4          4.1
-## 2 2                         Elea         4.7             4.5          4.2
-## 3 3                   Nice Matin         4.4             4.3          4.2
-## 4 4                 Serafina 105         4.3             4.2          4.1
-## 5 5 Bodrum Turkish Mediterranean         4.6             4.3          4.5
-## 6 6          French Roast Uptown         4.4             4.4          4.2
-##   service_review   price_range review_count average_review restaurant_main_type
-## 1            4.2 $30 and under  905 Reviews            4.3               French
-## 2            4.5  $50 and over  573 Reviews            4.7                Greek
-## 3            4.5    $31 to $50 2840 Reviews            4.5               French
-## 4            4.4 $30 and under  142 Reviews            4.4              Italian
-## 5            4.5 $30 and under  988 Reviews            4.6              Turkish
-## 6            4.4    $31 to $50  223 Reviews            4.4      French American</code></pre>
+<pre><code>##   X                         name food_review ambience_review value_review service_review   price_range review_count average_review restaurant_main_type
+## 1 1               Cafe Du Soleil         4.2             4.4          4.1            4.2 $30 and under  905 Reviews            4.3               French
+## 2 2                         Elea         4.7             4.5          4.2            4.5  $50 and over  573 Reviews            4.7                Greek
+## 3 3                   Nice Matin         4.4             4.3          4.2            4.5    $31 to $50 2840 Reviews            4.5               French
+## 4 4                 Serafina 105         4.3             4.2          4.1            4.4 $30 and under  142 Reviews            4.4              Italian
+## 5 5 Bodrum Turkish Mediterranean         4.6             4.3          4.5            4.5 $30 and under  988 Reviews            4.6              Turkish
+## 6 6          French Roast Uptown         4.4             4.4          4.2            4.4    $31 to $50  223 Reviews            4.4      French American</code></pre>
 <p>Then, we check the number of NA’s in each column.</p>
-<pre><code>##                    X                 name          food_review 
-##                    0                    0                   10 
-##      ambience_review         value_review       service_review 
-##                   10                   10                   10 
-##          price_range         review_count       average_review 
-##                    0                    0                    0 
-## restaurant_main_type 
-##                    0</code></pre>
+<pre><code>##                    X                 name          food_review      ambience_review         value_review       service_review          price_range 
+##                    0                    0                   10                   10                   10                   10                    0 
+##         review_count       average_review restaurant_main_type 
+##                    0                    0                    0</code></pre>
 <p>There are 10 NA’s in each review columns. To find out where they are, we plot the missing patterns in data by rows with <code>mi</code> package.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>From the plot above, we can see that all 10 missing values are in the same rows, so we decided to remove these rows by using <code>na.omit()</code> function. And we check again to make sure there are no NA’s in the dataset.</p>
-<pre><code>##                    X                 name          food_review 
-##                    0                    0                    0 
-##      ambience_review         value_review       service_review 
-##                    0                    0                    0 
-##          price_range         review_count       average_review 
-##                    0                    0                    0 
-## restaurant_main_type 
-##                    0</code></pre>
+<pre><code>##                    X                 name          food_review      ambience_review         value_review       service_review          price_range 
+##                    0                    0                    0                    0                    0                    0                    0 
+##         review_count       average_review restaurant_main_type 
+##                    0                    0                    0</code></pre>
+<p>We then check for NA’s in our second dataset.</p>
+<pre><code>##                                     DBA
+## 1                               GOLDBAR
+## 2                               GOLDBAR
+## 3                               GOLDBAR
+## 4 EAT-A-BAGEL (JOHN A NOBLE FERRY BOAT)
+## 5               RESTAURANT ON 58 STREET
+## 6               RESTAURANT ON 58 STREET
+##                                                                                                                                                                                                                                                             VIOLATION.DESCRIPTION
+## 1                                              Plumbing not properly installed or maintained; anti-siphonage or backflow prevention device not provided where required; equipment or floor not properly drained; sewage disposal system in disrepair or not functioning properly.
+## 2                                                                                                                                  Food contact surface not properly washed, rinsed and sanitized after each use and following any activity when contamination may have occurred.
+## 3                                                                                                                          Personal cleanliness inadequate. Outer garment soiled with possible contaminant.  Effective hair restraint not worn in an area where food is prepared.
+## 4                                                                                                                                                                                                                                                                                
+## 5                                                                                                                                              Cold food item held above 41潞 F (smoked fish and reduced oxygen packaged foods above 38 潞F) except during necessary preparation.
+## 6 Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.
+##   SCORE GRADE GRADE.DATE
+## 1    13     A 05/31/2013
+## 2    13     A 05/31/2013
+## 3    13     A 05/31/2013
+## 4     0     A 06/07/2013
+## 5     9     A 02/11/2014
+## 6     9     A 02/11/2014</code></pre>
+<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE            GRADE.DATE 
+##                     0                     0                     0                     0                     0</code></pre>
+<p>Since there is no NA’s, we will keep the whole dataset.</p>
 
 </div>
             </section>

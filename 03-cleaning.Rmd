@@ -34,3 +34,16 @@ colSums(is.na(restaurant_df))
 write.csv(restaurant_df, './restaurant.csv')
 ```
 
+We then check for NA's in our second dataset.
+
+```{r}
+restaurant_grades = read.csv(file = 'Restaurant_Grades.csv')
+
+head(restaurant_grades)
+```
+```{r}
+colSums(is.na(restaurant_grades))
+```
+
+Since there is no NA's, we will keep the whole dataset.
+

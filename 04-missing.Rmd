@@ -1,6 +1,21 @@
 # Data Transformation
+
+We'd like to order the data by `average_review` to see the general ranking of the restaurants.
+
 ```{r}
-data = read.csv("opentable.csv")
+data <- read.csv("restaurant.csv")
+data <- data[order(data$average_review, decreasing = TRUE),]
+unique(data$average_review)
 ```
+After we ordered the restaurant data by `average_review`, we found out that the first rows do not have actual ratings, so we need to find out what these rows are and what to do with them.
 
+```{r}
+data[data$average_review == "Booked 0 times today",]
+```
+Since there are only two rows and these rows with invalid `average_review` columns also have invalid inputs in other columns, we decide to remove all these rows.]
 
+```{r}
+data <- data[!(data$average_review == "Booked 0 times today"),]
+
+length(unique(data$name))
+```

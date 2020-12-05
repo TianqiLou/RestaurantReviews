@@ -10,7 +10,7 @@ Then, we check the number of NA's in each column.
 ```{r}
 colSums(is.na(restaurant_df))
 ```
-There are 10 NA's in each review columns. To find out where they are, we plot the missing patterns in data by rows with `mi` package.
+There are 5 NA's in each review columns. To find out where they are, we plot the missing patterns in data by rows with `mi` package.
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, results='hide',fig.keep='all'}
 library(mi)

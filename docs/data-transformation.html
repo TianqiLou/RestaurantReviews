@@ -24,7 +24,7 @@
 <meta name="author" content="Tianqi Lou (tl3028), Liyuan Tang (lt2806), Weiyao Xie (wx2251), Heather Zhu (yz4042)" />
 
 
-<meta name="date" content="2020-12-04" />
+<meta name="date" content="2020-12-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -100,6 +100,23 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Data Transformation</h1>
+<p>We’d like to order the data by <code>average_review</code> to see the general ranking of the restaurants.</p>
+<pre><code>##   [1] 4.844040 4.833710 4.800000 4.789700 4.772250 4.767800 4.760310 4.759500 4.750980 4.746130 4.734910 4.733380 4.732620 4.732090 4.717010 4.715450
+##  [17] 4.710920 4.710870 4.710110 4.700000 4.691100 4.691000 4.670290 4.659180 4.658940 4.657520 4.651940 4.651600 4.650200 4.649810 4.648530 4.647300
+##  [33] 4.646970 4.638290 4.637940 4.637730 4.637600 4.636800 4.636640 4.625500 4.624920 4.623170 4.622910 4.622790 4.621500 4.621370 4.620180 4.618370
+##  [49] 4.617720 4.617340 4.617100 4.616270 4.614660 4.614060 4.612700 4.611900 4.610750 4.610600 4.600000 4.586400 4.583600 4.571860 4.564050 4.562600
+##  [65] 4.555800 4.551780 4.550110 4.549300 4.548300 4.542330 4.539660 4.538300 4.533460 4.531700 4.528800 4.526780 4.526300 4.522060 4.520150 4.519760
+##  [81] 4.518990 4.518300 4.516200 4.516040 4.514710 4.513600 4.513290 4.511000 4.510890 4.510780 4.510470 4.510190 4.500000 4.493900 4.476800 4.468300
+##  [97] 4.468140 4.464280 4.462150 4.458200 4.457520 4.456820 4.452460 4.452090 4.447100 4.447020 4.441030 4.435700 4.423190 4.421600 4.421550 4.421400
+## [113] 4.420450 4.419730 4.419600 4.419570 4.418139 4.416640 4.415130 4.414210 4.400000 4.391000 4.387700 4.369000 4.365580 4.356600 4.349200 4.348800
+## [129] 4.348740 4.336420 4.335000 4.334650 4.326100 4.323960 4.317020 4.312800 4.311600 4.310389 4.300000 4.244500 4.231350 4.212960 4.200000 4.134200
+## [145] 4.127490 4.100000 4.000000 3.956600 3.917600 3.900000 3.820000 3.700000       NA</code></pre>
+<p>After we ordered the restaurant data by <code>average_review</code>, we found out that the first rows do not have actual ratings, so we need to find out what these rows are and what to do with them.</p>
+<pre><code>##       X name street_address google_map review_count phone website restaurant_type average_review food_review service_review ambience_review
+## NA &lt;NA&gt; &lt;NA&gt;           &lt;NA&gt;       &lt;NA&gt;         &lt;NA&gt;  &lt;NA&gt;    &lt;NA&gt;            &lt;NA&gt;             NA          NA             NA              NA
+##    value_review price_range star_1 star_2 star_3 star_4 star_5 description restaurant_main_type latitude longitude postal_code
+## NA         &lt;NA&gt;        &lt;NA&gt;     NA     NA     NA     NA   &lt;NA&gt;        &lt;NA&gt;                 &lt;NA&gt;       NA        NA          NA</code></pre>
+<p>Since there are only two rows and these rows with invalid <code>average_review</code> columns also have invalid inputs in other columns, we decide to remove all these rows.</p>
 
 </div>
             </section>

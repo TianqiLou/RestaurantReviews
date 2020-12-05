@@ -12,10 +12,5 @@ After we ordered the restaurant data by `average_review`, we found out that the 
 ```{r}
 data[data$average_review == "Booked 0 times today",]
 ```
-Since there are only two rows and these rows with invalid `average_review` columns also have invalid inputs in other columns, we decide to remove all these rows.]
+Since there are only two rows and these rows with invalid `average_review` columns also have invalid inputs in other columns, we decide to remove all these rows.
 
-```{r}
-data <- data[!(data$average_review == "Booked 0 times today"),]
-
-length(unique(data$name))
-```

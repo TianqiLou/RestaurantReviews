@@ -14,7 +14,7 @@ We'd like to join our datasets to see both the violations and the ratings. To ac
 data$name <- tolower(data$name)
 data$name<-sub("\\-.*", "", data$name)
 
-violations <- read.csv(file = 'violations.csv',encoding = "UTF-8")
+violations <- read.csv(file = 'violations.csv')
 
 violations$DBA <- tolower(violations$DBA)
 violations$DBA <- sub("\\(.*",'',violations$DBA)

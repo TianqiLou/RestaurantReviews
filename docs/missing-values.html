@@ -101,22 +101,18 @@
 <div id="missing-values" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Missing values</h1>
 <p>First, we load the data and show the first couple lines here.</p>
-<pre><code>##                         name                            street_address
-## 1 Smoke Jazz and Supper Club         2751 Broadway New York, NY  10025
-## 2        Tavern on the Green 1 Tavern on the Green New York, NY  10023
-## 3                ABC Kitchen   35 East 18th Street New York, NY  10003
-##                                                          google_map review_count          phone
-## 1 //www.google.com/maps/search/?api=1&amp;query=40.8012200%2C-73.968013         2155 (212) 864-6662
-## 2  //www.google.com/maps/search/?api=1&amp;query=40.7723930%2C-73.97862         7029 (212) 877-8684
-## 3 //www.google.com/maps/search/?api=1&amp;query=40.7377830%2C-73.989714         6031 (212) 475-5829
-##                            website       restaurant_type average_review food_review
-## 1        http://www.smokejazz.com/ Contemporary American        4.42155         3.9
-## 2 http://www.tavernonthegreen.com/              American        4.67029         4.4
-## 3    http://www.abckitchennyc.com/ Contemporary American        4.76031         4.6
-##   service_review ambience_review value_review price_range star_1 star_2 star_3 star_4 star_5
-## 1            4.2             4.5          4.0  $31 to $50      2      7      5     24     62
-## 2            4.4             4.7          4.0  $31 to $50      1      2      6     19     72
-## 3            4.4             4.6          4.1  $31 to $50      1      2      5     15     77
+<pre><code>##                         name                            street_address                                                        google_map review_count
+## 1 Smoke Jazz and Supper Club         2751 Broadway New York, NY  10025 //www.google.com/maps/search/?api=1&amp;query=40.8012200%2C-73.968013         2155
+## 2        Tavern on the Green 1 Tavern on the Green New York, NY  10023  //www.google.com/maps/search/?api=1&amp;query=40.7723930%2C-73.97862         7029
+## 3                ABC Kitchen   35 East 18th Street New York, NY  10003 //www.google.com/maps/search/?api=1&amp;query=40.7377830%2C-73.989714         6031
+##            phone                          website       restaurant_type average_review food_review service_review ambience_review value_review
+## 1 (212) 864-6662        http://www.smokejazz.com/ Contemporary American        4.42155         3.9            4.2             4.5          4.0
+## 2 (212) 877-8684 http://www.tavernonthegreen.com/              American        4.67029         4.4            4.4             4.7          4.0
+## 3 (212) 475-5829    http://www.abckitchennyc.com/ Contemporary American        4.76031         4.6            4.4             4.6          4.1
+##   price_range star_1 star_2 star_3 star_4 star_5
+## 1  $31 to $50      2      7      5     24     62
+## 2  $31 to $50      1      2      6     19     72
+## 3  $31 to $50      1      2      5     15     77
 ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     description
 ## 1 Smoke has augmented its reputation as one of Manhattan’s most distinguished jazz venues with an addition very uncommon to jazz clubs—great food. Smoke serves innovative American Bistro fare developed by critically acclaimed executive chef Patricia Williams. Smoke is proud to be New York&#39;s only boutique Jazz &amp; Supper Club with an award winning chef and world-class jazz seven nights a week.IMPORTANT RESERVATION INFORMATION:Please check the Smoke Calendar page at www.smokejazz.com to view music charge policies for the date you are planning to join us. If you are a Smoke Rewards Card holder, you are entitled to use your card Monday - Thursday, with the exception of some special events. We kindly recommend that our guests purchase tickets in advance on our website. You are always welcome to call us with questions or concerns regarding music charge policies at (212) 864-6662. Thank you!
 ## 2                                                                                                                                                                                                                                                                                                                                                                                                                     Magical is a word thrown around a lot when discussing Tavern On The Green and one can’t help but feel magic in the air.  Jim and David, architect Richard Lewis and landscape architect Robin Key, preserved the Victorian/ Gothic elegance of the semi-circular building; it is authentic, natural, elegant and sexy.  It has been re-built to spectacular precision and the décor is of a grand farmhouse one might find on the property of an Italian Villa or a historic Hudson River Valley mansion.
@@ -126,33 +122,25 @@
 ## 2              American 40.77219 -73.97772       10023
 ## 3 Contemporary American 40.73790 -73.98950       10003</code></pre>
 <p>Then, we check the number of NA’s in each column.</p>
-<pre><code>##                 name       street_address           google_map         review_count 
-##                    0                    0                    0                    0 
-##                phone              website      restaurant_type       average_review 
-##                    0                    2                    0                    0 
-##          food_review       service_review      ambience_review         value_review 
-##                    0                    0                    0                    0 
-##          price_range               star_1               star_2               star_3 
-##                    0                    0                    0                    0 
-##               star_4               star_5          description restaurant_main_type 
-##                    0                    0                    0                    0 
-##             latitude            longitude          postal_code 
-##                    0                    0                    1</code></pre>
+<pre><code>##                 name       street_address           google_map         review_count                phone              website      restaurant_type 
+##                    0                    0                    0                    0                    0                    2                    0 
+##       average_review          food_review       service_review      ambience_review         value_review          price_range               star_1 
+##                    0                    0                    0                    0                    0                    0                    0 
+##               star_2               star_3               star_4               star_5          description restaurant_main_type             latitude 
+##                    0                    0                    0                    0                    0                    0                    0 
+##            longitude          postal_code 
+##                    0                    1</code></pre>
 <p>There are 5 NA’s in each review columns. To find out where they are, we plot the missing patterns in data by rows with <code>mi</code> package.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>From the plot above, we can see that all 10 missing values are in the same rows, so we decided to remove these rows by using <code>na.omit()</code> function. And we check again to make sure there are no NA’s in the dataset.</p>
-<pre><code>##                 name       street_address           google_map         review_count 
-##                    0                    0                    0                    0 
-##                phone              website      restaurant_type       average_review 
-##                    0                    0                    0                    0 
-##          food_review       service_review      ambience_review         value_review 
-##                    0                    0                    0                    0 
-##          price_range               star_1               star_2               star_3 
-##                    0                    0                    0                    0 
-##               star_4               star_5          description restaurant_main_type 
-##                    0                    0                    0                    0 
-##             latitude            longitude          postal_code 
-##                    0                    0                    0</code></pre>
+<pre><code>##                 name       street_address           google_map         review_count                phone              website      restaurant_type 
+##                    0                    0                    0                    0                    0                    0                    0 
+##       average_review          food_review       service_review      ambience_review         value_review          price_range               star_1 
+##                    0                    0                    0                    0                    0                    0                    0 
+##               star_2               star_3               star_4               star_5          description restaurant_main_type             latitude 
+##                    0                    0                    0                    0                    0                    0                    0 
+##            longitude          postal_code 
+##                    0                    0</code></pre>
 <p>We then check for NA’s in our second dataset.</p>
 <pre><code>##                                     DBA
 ## 1                               GOLDBAR
@@ -166,7 +154,7 @@
 ## 2                                                                                                                                  Food contact surface not properly washed, rinsed and sanitized after each use and following any activity when contamination may have occurred.
 ## 3                                                                                                                          Personal cleanliness inadequate. Outer garment soiled with possible contaminant.  Effective hair restraint not worn in an area where food is prepared.
 ## 4                                                                                                                                                                                                                                                                                
-## 5                                                                                                                                                Cold food item held above 41º F (smoked fish and reduced oxygen packaged foods above 38 ºF) except during necessary preparation.
+## 5                                                                                                                                                Cold food item held above 41o F (smoked fish and reduced oxygen packaged foods above 38 oF) except during necessary preparation.
 ## 6 Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.
 ##   SCORE GRADE GRADE.DATE
 ## 1    13     A 05/31/2013
@@ -175,15 +163,11 @@
 ## 4     0     A 06/07/2013
 ## 5     9     A 02/11/2014
 ## 6     9     A 02/11/2014</code></pre>
-<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE 
-##                     0                  1755                     0                     0 
-##            GRADE.DATE 
-##                     0</code></pre>
+<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE            GRADE.DATE 
+##                     0                  1755                     0                     0                     0</code></pre>
 <p>Since our dataset is large enough, we can delete these rows. Then double check.</p>
-<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE 
-##                     0                     0                     0                     0 
-##            GRADE.DATE 
-##                     0</code></pre>
+<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE            GRADE.DATE 
+##                     0                     0                     0                     0                     0</code></pre>
 
 </div>
             </section>

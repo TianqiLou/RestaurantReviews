@@ -14,7 +14,7 @@ We'd like to join our datasets to see both the violations and the ratings. To ac
 data$name <- tolower(data$name)
 data$name<-sub("\\-.*", "", data$name)
 
-violations <- read.csv(file = 'violations.csv')
+violations <- read.csv(file = 'violations.csv',encoding = "UTF-8")
 
 violations$DBA <- tolower(violations$DBA)
 violations$DBA <- sub("\\(.*",'',violations$DBA)
@@ -32,4 +32,23 @@ df$DBA <- NULL
 
 head(df,3)
 write.csv(df, './finaldf.csv', row.names=FALSE)
+```
+
+While the above final dataset contains information about restaurants which had violation records, in order to faciliate the interaction part of this project, we are going to create `cleaned_restaurants` and `cleaned_violations` datasets, so that we can 1.find each restaruant's violation total count (including 0) 2.boil down the large original violations file so the new file only contains restaurant week's restaurants' specific violation information.
+
+```{r}
+cleaned_restaurants_df <-
+  sqldf('SELECT d.*,
+  CASE WHEN v.violation_count IS NULL THEN 0 ELSE v.violation_count END AS violation_count
+  FROM data AS d 
+  LEFT JOIN violation_counts AS v 
+  ON d.name = v.DBA')
+
+cleaned_violations_df <-
+  sqldf('SELECT *
+  FROM violations v
+  WHERE v.DBA IN (SELECT d.name FROM data AS d)')
+
+write.csv(cleaned_restaurants_df, './cleaned_restaurants.csv', row.names=FALSE)
+write.csv(cleaned_violations_df, './cleaned_violations.csv', row.names=FALSE)
 ```

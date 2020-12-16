@@ -156,18 +156,18 @@
 ## 4                                                                                                                                                                                                                                                                                
 ## 5                                                                                                                                                Cold food item held above 41o F (smoked fish and reduced oxygen packaged foods above 38 oF) except during necessary preparation.
 ## 6 Non-food contact surface improperly constructed. Unacceptable material used. Non-food contact surface or equipment improperly maintained and/or not properly sealed, raised, spaced or movable to allow accessibility for cleaning on all sides, above and underneath the unit.
-##   SCORE GRADE GRADE.DATE
-## 1    13     A 05/31/2013
-## 2    13     A 05/31/2013
-## 3    13     A 05/31/2013
-## 4     0     A 06/07/2013
-## 5     9     A 02/11/2014
-## 6     9     A 02/11/2014</code></pre>
-<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE            GRADE.DATE 
-##                     0                  1755                     0                     0                     0</code></pre>
+##   CRITICAL.FLAG SCORE GRADE GRADE.DATE
+## 1             N    13     A 05/31/2013
+## 2             Y    13     A 05/31/2013
+## 3             Y    13     A 05/31/2013
+## 4                   0     A 06/07/2013
+## 5             Y     9     A 02/11/2014
+## 6             N     9     A 02/11/2014</code></pre>
+<pre><code>##                   DBA VIOLATION.DESCRIPTION         CRITICAL.FLAG                 SCORE                 GRADE            GRADE.DATE 
+##                     0                  1755                  1755                     0                     0                     0</code></pre>
 <p>Since our dataset is large enough, we can delete these rows. Then double check.</p>
-<pre><code>##                   DBA VIOLATION.DESCRIPTION                 SCORE                 GRADE            GRADE.DATE 
-##                     0                     0                     0                     0                     0</code></pre>
+<pre><code>##                   DBA VIOLATION.DESCRIPTION         CRITICAL.FLAG                 SCORE                 GRADE            GRADE.DATE 
+##                     0                     0                     0                     0                     0                     0</code></pre>
 
 </div>
             </section>

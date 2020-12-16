@@ -1,6 +1,5 @@
 # Interactive component
 
 
-```{html}
 <iframe src="actual-interactive-d3.html" width="800" height="600"></iframe>
-```
+

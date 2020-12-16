@@ -66,13 +66,51 @@ ggplot(data = df) +
 ```
 
 ```{r}
+library(dplyr)
 
 Manhhattan_zips <- c(10026, 10027, 10030, 10037, 10039, 10001, 10011, 10018, 10019, 10020, 10036,	10029, 10035,10010, 10016, 10017, 10022,
                      10012, 10013, 10014,	10004, 10005, 10006, 10007, 10038, 10280,	10002, 10003, 10009, 10021, 10028, 10044, 10065, 10075, 10128,
                      10023, 10024, 10025, 10031, 10032, 10033, 10034, 10040)
-typeof(df$postal_code)
+
+df_man <- df[df$postal_code %in% Manhhattan_zips,] 
+
+df_man <- df_man %>%
+  mutate(Neighborhood = case_when(
+    postal_code %in% c(	10026, 10027, 10030, 10037, 10039) ~ "Central Harlem",
+    postal_code %in% c(10001, 10011, 10018, 10019, 10020, 10036) ~ 'Chelsea and Clinton',
+    postal_code %in% c(10029, 10035) ~ 'East Harlem',
+    postal_code %in% c(10010, 10016, 10017, 10022) ~ 'Gramercy Park and Murray Hill',
+    postal_code %in% c(10012, 10013, 10014) ~ 'Greenwich Village and Soho',
+    postal_code %in% c(10004, 10005, 10006, 10007, 10038, 10280) ~ 'Lower Manhattan',
+    postal_code %in% c(10002, 10003, 10009) ~ 'Lower East Side ',
+    postal_code %in% c(10021, 10028, 10044, 10065, 10075, 10128) ~ 'Upper East Side',
+    postal_code %in% c(10023, 10024, 10025) ~ 'Upper West Side',
+    postal_code %in% c(10031, 10032, 10033, 10034, 10040) ~ 'Inwood and Washington Heights'
+  ))
+
+avg_violation <- aggregate(df_man$violation_count, by = list(df_man$Neighborhood), FUN = mean)
+
+ggplot(avg_violation,aes(reorder(Group.1,-x,sum),x))+
+  geom_col(binwidth=1, fill='lightblue') +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle=60,hjust=1)) +
+  ggtitle("Average vioaltion count by neighborhood") +
+  labs(x = 'Neighborhood',y = 'average violation count')
 
 ```
 
+```{r,fig.height=6}
+df_man %>%
+  group_by(Neighborhood, restaurant_main_type) %>%
+  summarize(count = n()) %>%
+  ggplot(aes(fct_relevel(Neighborhood),count)) +
+  geom_bar(aes(fill = restaurant_main_type), position = "stack", stat = "identity") +
+  scale_fill_manual(values =  primary.colors(21)) +
+  theme(axis.text.x=element_text(angle=60,hjust=1)) +
+  ggtitle('Total vioaltion in each neighborhood by restaurant type') +
+  labs(x='Neighborhood')
+```
 
+```{r}
 
+```

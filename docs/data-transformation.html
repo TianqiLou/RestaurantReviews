@@ -101,27 +101,48 @@
 <div id="data-transformation" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Data Transformation</h1>
 <p>We’d like to order the data by <code>average_review</code> to see the general ranking of the restaurants.</p>
-<pre><code>##                              name                           street_address                                                        google_map
-## 274 Il Mulino New York - Downtown   86 West 3rd Street New York, NY  10012 //www.google.com/maps/search/?api=1&amp;query=40.7298290%2C-73.999091
-## 285               The Musket Room 265 Elizabeth St. CI New York, NY  10012 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735
-## 6           Estiatorio Milos - NY 125 West 55th Street New York, NY  10019 //www.google.com/maps/search/?api=1&amp;query=40.7634560%2C-73.978894
-## 260                      Perry St     176 Perry Street New York, NY  10014   //www.google.com/maps/search/?api=1&amp;query=40.7346000%2C-74.0093
-## 130     Benjamin Steakhouse Prime        23 E 40th St. New York, NY  10016 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977
-## 108             Club A Steakhouse 240 East 58th Street New York, NY  10022  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
-##     review_count          phone                            website       restaurant_type average_review food_review service_review ambience_review
-## 274          830 (212) 673-3783           http://www.ilmulino.com/               Italian        4.88300         4.7            4.8             4.6
-## 285          768 (212) 219-0764         http://www.musketroom.com/         International        4.87680         4.7            4.7             4.6
-## 6           4404 (212) 245-7400    http://www.estiatoriomilos.com/               Seafood        4.84404         4.8            4.6             4.6
-## 260         3657 (212) 352-1900  http://www.perrystrestaurant.com/ Contemporary American        4.83657         4.7            4.7             4.6
-## 130          356 (212) 338-0818 http://www.benjaminsteakhouse.com/              American        4.83560         4.7            4.8             4.6
-## 108         3371 (212) 688-4190        http://clubasteakhouse.com/            Steakhouse        4.83371         4.7            4.8             4.7
-##     value_review  price_range star_1 star_2 star_3 star_4 star_5
-## 274          4.4 $50 and over      1      2      2      5     90
-## 285          4.2   $31 to $50      0      1      3     15     81
-## 6            4.2 $50 and over      1      1      3     14     81
-## 260          4.3   $31 to $50      1      2      2     11     84
-## 130          4.3 $50 and over      0      1      4     13     82
-## 108          4.6   $31 to $50      1      1      4     10     84
+<pre><code>##                              name                           street_address
+## 274 Il Mulino New York - Downtown   86 West 3rd Street New York, NY  10012
+## 285               The Musket Room 265 Elizabeth St. CI New York, NY  10012
+## 6           Estiatorio Milos - NY 125 West 55th Street New York, NY  10019
+## 260                      Perry St     176 Perry Street New York, NY  10014
+## 130     Benjamin Steakhouse Prime        23 E 40th St. New York, NY  10016
+## 108             Club A Steakhouse 240 East 58th Street New York, NY  10022
+##                                                            google_map
+## 274 //www.google.com/maps/search/?api=1&amp;query=40.7298290%2C-73.999091
+## 285 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735
+## 6   //www.google.com/maps/search/?api=1&amp;query=40.7634560%2C-73.978894
+## 260   //www.google.com/maps/search/?api=1&amp;query=40.7346000%2C-74.0093
+## 130 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977
+## 108  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
+##     review_count          phone                            website
+## 274          830 (212) 673-3783           http://www.ilmulino.com/
+## 285          768 (212) 219-0764         http://www.musketroom.com/
+## 6           4404 (212) 245-7400    http://www.estiatoriomilos.com/
+## 260         3657 (212) 352-1900  http://www.perrystrestaurant.com/
+## 130          356 (212) 338-0818 http://www.benjaminsteakhouse.com/
+## 108         3371 (212) 688-4190        http://clubasteakhouse.com/
+##           restaurant_type average_review food_review service_review
+## 274               Italian        4.88300         4.7            4.8
+## 285         International        4.87680         4.7            4.7
+## 6                 Seafood        4.84404         4.8            4.6
+## 260 Contemporary American        4.83657         4.7            4.7
+## 130              American        4.83560         4.7            4.8
+## 108            Steakhouse        4.83371         4.7            4.8
+##     ambience_review value_review  price_range star_1 star_2 star_3 star_4
+## 274             4.6          4.4 $50 and over      1      2      2      5
+## 285             4.6          4.2   $31 to $50      0      1      3     15
+## 6               4.6          4.2 $50 and over      1      1      3     14
+## 260             4.6          4.3   $31 to $50      1      2      2     11
+## 130             4.6          4.3 $50 and over      0      1      4     13
+## 108             4.7          4.6   $31 to $50      1      1      4     10
+##     star_5
+## 274     90
+## 285     81
+## 6       81
+## 260     84
+## 130     82
+## 108     84
 ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       description
 ## 274                                                                                                                                                                                                                                                                                                                                                         For nearly 35 years, Il Mulino New York has prepared authentic Abruzzese cuisine with unparalleled service.There&lt;U+00A1&gt;&lt;U+00AF&gt;s no place like Il Mulino New York. The luxury Italian restaurant&lt;U+00A1&gt;&lt;U+00AF&gt;s flagship Greenwich Village outpost initiated New York&lt;U+00A1&gt;&lt;U+00AF&gt;s fine Italian dining trend and is still prized in the city&lt;U+00A1&gt;&lt;U+00AF&gt;s elite dining scene. Zagat has rated Il Mulino New York as Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s No. 1 Italian restaurant for decades and has said the restaurant provides &quot;one-of-a-kind&quot; cuisine filled with delicious flavors, creating an &quot;outstanding Italian classic&quot; restaurant where &quot;every dish is a masterpiece.&quot; 
 ## 285 The Musket Room brings the spirit of New Zealand and the country&lt;U+00A1&gt;&lt;U+00AF&gt;s diverse cuisine to Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s Nolita neighborhood. Chef and owner Matt Lambert, a New Zealand native, created a menu that charts the evolution of New Zealand cuisine, from the country&lt;U+00A1&gt;&lt;U+00AF&gt;s Old World traditions and Asian influences to its modern day dedication to local and seasonal offerings. Inspired by an era in New Zealand when adventure and discovery blossomed, The Musket Room offers a modern approach to the country&lt;U+00A1&gt;&lt;U+00AF&gt;s culinary past, serving dinner and drinks.Reservations made through Opentable will secure you a reservation in either the main dining room or garden room, where we offer both a la carte  and the short  tasting menu. The tasting menu must be booked in advance. Please let us know if you or any of your guests have an allergy or dietary restriction. We can accommodate for vegetarians with our tasting menu and al a carte for vegan diners with 24hr notice.  
@@ -138,18 +159,26 @@
 ## 108            Steakhouse 40.76005 -73.96558       10022</code></pre>
 <p>We’d like to join our datasets to see both the violations and the ratings. To accomplish that, we first convert all restaurants names to lower cases with <code>tolower()</code>, then strip symbols off on two datasets with <code>sub()</code> to create uniform syntax for names. After that, we used <code>sqldf</code> package to count the number of violations each restaurant has and join the two datasets together as our final dataset.</p>
 <p>We can take a glance at the final dataset.</p>
-<pre><code>##                        name                           street_address                                                        google_map review_count
-## 1           the musket room 265 Elizabeth St. CI New York, NY  10012 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735          768
-## 2 benjamin steakhouse prime        23 E 40th St. New York, NY  10016 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977          356
-## 3         club a steakhouse 240 East 58th Street New York, NY  10022  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609         3371
-##            phone                            website restaurant_type average_review food_review service_review ambience_review value_review  price_range
-## 1 (212) 219-0764         http://www.musketroom.com/   International        4.87680         4.7            4.7             4.6          4.2   $31 to $50
-## 2 (212) 338-0818 http://www.benjaminsteakhouse.com/        American        4.83560         4.7            4.8             4.6          4.3 $50 and over
-## 3 (212) 688-4190        http://clubasteakhouse.com/      Steakhouse        4.83371         4.7            4.8             4.7          4.6   $31 to $50
-##   star_1 star_2 star_3 star_4 star_5
-## 1      0      1      3     15     81
-## 2      0      1      4     13     82
-## 3      1      1      4     10     84
+<pre><code>##                        name                           street_address
+## 1           the musket room 265 Elizabeth St. CI New York, NY  10012
+## 2 benjamin steakhouse prime        23 E 40th St. New York, NY  10016
+## 3         club a steakhouse 240 East 58th Street New York, NY  10022
+##                                                          google_map
+## 1 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735
+## 2 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977
+## 3  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
+##   review_count          phone                            website
+## 1          768 (212) 219-0764         http://www.musketroom.com/
+## 2          356 (212) 338-0818 http://www.benjaminsteakhouse.com/
+## 3         3371 (212) 688-4190        http://clubasteakhouse.com/
+##   restaurant_type average_review food_review service_review ambience_review
+## 1   International        4.87680         4.7            4.7             4.6
+## 2        American        4.83560         4.7            4.8             4.6
+## 3      Steakhouse        4.83371         4.7            4.8             4.7
+##   value_review  price_range star_1 star_2 star_3 star_4 star_5
+## 1          4.2   $31 to $50      0      1      3     15     81
+## 2          4.3 $50 and over      0      1      4     13     82
+## 3          4.6   $31 to $50      1      1      4     10     84
 ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     description
 ## 1 The Musket Room brings the spirit of New Zealand and the country&lt;U+00A1&gt;&lt;U+00AF&gt;s diverse cuisine to Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s Nolita neighborhood. Chef and owner Matt Lambert, a New Zealand native, created a menu that charts the evolution of New Zealand cuisine, from the country&lt;U+00A1&gt;&lt;U+00AF&gt;s Old World traditions and Asian influences to its modern day dedication to local and seasonal offerings. Inspired by an era in New Zealand when adventure and discovery blossomed, The Musket Room offers a modern approach to the country&lt;U+00A1&gt;&lt;U+00AF&gt;s culinary past, serving dinner and drinks.Reservations made through Opentable will secure you a reservation in either the main dining room or garden room, where we offer both a la carte  and the short  tasting menu. The tasting menu must be booked in advance. Please let us know if you or any of your guests have an allergy or dietary restriction. We can accommodate for vegetarians with our tasting menu and al a carte for vegan diners with 24hr notice.  
 ## 2                                                                                                                                                                                                              After ten years of continued success in the New York metro area, Benjamin Restaurant Group is proud to open its newest space, Benjamin Steakhouse Prime. Here, modern elegance is combined with traditional steakhouse classics, while also showcasing signature standouts from highly regarded sister property Benjamin Steakhouse. After perfecting both steakhouse and seafood concepts in their arsenal, Benjamin Restaurant Group is highlighting the grill at Prime, serving up USDA prime dry aged steaks and succulent seafood in unique ways. The 10,000 square foot space houses an expansive main dining room featuring wall mounted fireplaces. A temperature-controlled wine wall is exposed throughout the upper level which also offers five customizable private dining spaces for seating of up to 100+ guests.

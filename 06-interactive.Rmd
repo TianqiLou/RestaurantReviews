@@ -1,4 +1,4 @@
 # Interactive component
 
 
-<iframe src="http://localhost:8000/actual-interactive-d3.html" width="800" height="600"></iframe>
+<iframe src="docs/actual-interactive-d3.html" width="800" height="600"></iframe>

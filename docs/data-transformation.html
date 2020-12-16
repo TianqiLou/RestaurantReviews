@@ -33,6 +33,7 @@
   
 <link rel="prev" href="missing-values.html"/>
 <link rel="next" href="results.html"/>
+<script src="libs/header-attrs-2.4/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,8 +52,6 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
 
@@ -98,95 +97,102 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="data-transformation" class="section level1">
+<div id="data-transformation" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Data Transformation</h1>
 <p>We’d like to order the data by <code>average_review</code> to see the general ranking of the restaurants.</p>
-<pre><code>##                              name                           street_address
-## 274 Il Mulino New York - Downtown   86 West 3rd Street New York, NY  10012
-## 285               The Musket Room 265 Elizabeth St. CI New York, NY  10012
-## 6           Estiatorio Milos - NY 125 West 55th Street New York, NY  10019
-## 260                      Perry St     176 Perry Street New York, NY  10014
-## 130     Benjamin Steakhouse Prime        23 E 40th St. New York, NY  10016
-## 108             Club A Steakhouse 240 East 58th Street New York, NY  10022
+<pre><code>##                                                      name
+## 6                                   Estiatorio Milos - NY
+## 108                                     Club A Steakhouse
+## 150                  Bobby Van&#39;s Steakhouse - 54th Street
+## 9   Del Frisco&#39;s Double Eagle Steak House - New York City
+## 32                          Zuma Japanese Restaurant - NY
+## 3                                             ABC Kitchen
+##                                      street_address
+## 6          125 West 55th Street New York, NY  10019
+## 108        240 East 58th Street New York, NY  10022
+## 150          131 E. 54th Street New York, NY  10169
+## 9   1221 Avenue of the Americas New York, NY  10020
+## 32           261 Madison Avenue New York, NY  10016
+## 3           35 East 18th Street New York, NY  10003
 ##                                                            google_map
-## 274 //www.google.com/maps/search/?api=1&amp;query=40.7298290%2C-73.999091
-## 285 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735
 ## 6   //www.google.com/maps/search/?api=1&amp;query=40.7634560%2C-73.978894
-## 260   //www.google.com/maps/search/?api=1&amp;query=40.7346000%2C-74.0093
-## 130 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977
 ## 108  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
-##     review_count          phone                            website
-## 274          830 (212) 673-3783           http://www.ilmulino.com/
-## 285          768 (212) 219-0764         http://www.musketroom.com/
-## 6           4404 (212) 245-7400    http://www.estiatoriomilos.com/
-## 260         3657 (212) 352-1900  http://www.perrystrestaurant.com/
-## 130          356 (212) 338-0818 http://www.benjaminsteakhouse.com/
-## 108         3371 (212) 688-4190        http://clubasteakhouse.com/
+## 150 //www.google.com/maps/search/?api=1&amp;query=40.7591420%2C-73.970869
+## 9   //www.google.com/maps/search/?api=1&amp;query=40.7591640%2C-73.981365
+## 32  //www.google.com/maps/search/?api=1&amp;query=40.7504680%2C-73.980608
+## 3   //www.google.com/maps/search/?api=1&amp;query=40.7377830%2C-73.989714
+##     review_count          phone                         website
+## 6           4404 (212) 245-7400 http://www.estiatoriomilos.com/
+## 108         3371 (212) 688-4190     http://clubasteakhouse.com/
+## 150          897 (212) 207-8050       http://www.bobbyvans.com/
+## 9           7225 (212) 575-5129          http://delfriscos.com/
+## 32           678 (212) 544-9862  http://www.zumarestaurant.com/
+## 3           6031 (212) 475-5829   http://www.abckitchennyc.com/
 ##           restaurant_type average_review food_review service_review
-## 274               Italian        4.88300         4.7            4.8
-## 285         International        4.87680         4.7            4.7
 ## 6                 Seafood        4.84404         4.8            4.6
-## 260 Contemporary American        4.83657         4.7            4.7
-## 130              American        4.83560         4.7            4.8
 ## 108            Steakhouse        4.83371         4.7            4.8
+## 150            Steakhouse         4.7897         4.6            4.5
+## 9              Steakhouse        4.77225         4.6            4.7
+## 32               Japanese         4.7678         4.6            4.4
+## 3   Contemporary American        4.76031         4.6            4.4
 ##     ambience_review value_review  price_range star_1 star_2 star_3 star_4
-## 274             4.6          4.4 $50 and over      1      2      2      5
-## 285             4.6          4.2   $31 to $50      0      1      3     15
 ## 6               4.6          4.2 $50 and over      1      1      3     14
-## 260             4.6          4.3   $31 to $50      1      2      2     11
-## 130             4.6          4.3 $50 and over      0      1      4     13
 ## 108             4.7          4.6   $31 to $50      1      1      4     10
+## 150             4.4          4.2   $31 to $50      2      2      2     15
+## 9               4.5            4 $50 and over      1      2      5     16
+## 32              4.6          4.1 $50 and over      1      1      6     18
+## 3               4.6          4.1   $31 to $50      1      2      5     15
 ##     star_5
-## 274     90
-## 285     81
 ## 6       81
-## 260     84
-## 130     82
 ## 108     84
-##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       description
-## 274                                                                                                                                                                                                                                                                                                                                                         For nearly 35 years, Il Mulino New York has prepared authentic Abruzzese cuisine with unparalleled service.There&lt;U+00A1&gt;&lt;U+00AF&gt;s no place like Il Mulino New York. The luxury Italian restaurant&lt;U+00A1&gt;&lt;U+00AF&gt;s flagship Greenwich Village outpost initiated New York&lt;U+00A1&gt;&lt;U+00AF&gt;s fine Italian dining trend and is still prized in the city&lt;U+00A1&gt;&lt;U+00AF&gt;s elite dining scene. Zagat has rated Il Mulino New York as Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s No. 1 Italian restaurant for decades and has said the restaurant provides &quot;one-of-a-kind&quot; cuisine filled with delicious flavors, creating an &quot;outstanding Italian classic&quot; restaurant where &quot;every dish is a masterpiece.&quot; 
-## 285 The Musket Room brings the spirit of New Zealand and the country&lt;U+00A1&gt;&lt;U+00AF&gt;s diverse cuisine to Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s Nolita neighborhood. Chef and owner Matt Lambert, a New Zealand native, created a menu that charts the evolution of New Zealand cuisine, from the country&lt;U+00A1&gt;&lt;U+00AF&gt;s Old World traditions and Asian influences to its modern day dedication to local and seasonal offerings. Inspired by an era in New Zealand when adventure and discovery blossomed, The Musket Room offers a modern approach to the country&lt;U+00A1&gt;&lt;U+00AF&gt;s culinary past, serving dinner and drinks.Reservations made through Opentable will secure you a reservation in either the main dining room or garden room, where we offer both a la carte  and the short  tasting menu. The tasting menu must be booked in advance. Please let us know if you or any of your guests have an allergy or dietary restriction. We can accommodate for vegetarians with our tasting menu and al a carte for vegan diners with 24hr notice.  
-## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                      The freshest, most flavorful fish, vegetables / fruits, prepared in the subtlest way and served in an elegant, spacious setting, is why Milo&#39;s has become of one of New York&#39;s most lauded restaurant. Costas Spiliadis, owner/chef, is continuing the standard of excellence he began in Montreal, where he opened the original Milos, now a landmark. Patrons can choose their fish from an abundant market display and watch it swiftly grilled in the open kitchen.  Pre-fixe menu 5pm to 6pm  Monday to Saturday, Late night menu 10pm to closing Monday to Saturday.
-## 260                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Chef Jean-Georges brings relaxed elegance to the West Village with Perry St - awarded three stars by the New York Times. Jean-Georges&lt;U+00A1&gt;&lt;U+00AF&gt; son, Cedric Vongerichten, helms the kitchen, creating dishes that reflect his own keen instinct for balancing flavor and texture with an exquisite blend of French, American, and Asian influences and ingredients. The menu is inspired by the season, centering on the local market at Union Square. Please visit us http://www.perrystrestaurant.com for menus and more information.
-## 130                                                                                                                                                                                                              After ten years of continued success in the New York metro area, Benjamin Restaurant Group is proud to open its newest space, Benjamin Steakhouse Prime. Here, modern elegance is combined with traditional steakhouse classics, while also showcasing signature standouts from highly regarded sister property Benjamin Steakhouse. After perfecting both steakhouse and seafood concepts in their arsenal, Benjamin Restaurant Group is highlighting the grill at Prime, serving up USDA prime dry aged steaks and succulent seafood in unique ways. The 10,000 square foot space houses an expansive main dining room featuring wall mounted fireplaces. A temperature-controlled wine wall is exposed throughout the upper level which also offers five customizable private dining spaces for seating of up to 100+ guests.
-## 108                                                                                                                                                                                                                                                                                                                                                                                                                                                 Club A Steakhouse provides a truly unique dining experience. Family owned and operated the owner Bruno Selimaj or one of his three sons are onsite and greets each guest every night. Club A manages to encompass the characteristics of a traditional steak house and new world modernism that is evident in both the menu and d&lt;U+00A8&gt;&lt;U+00A6&gt;cor. The warmth paired with the distinct menu and extensive wine list make it perfect for any occasion. Please note that Club A Steakhouse will honor your Groupon reservations however OpenTable Diner Rewards points will not be received.
-##      restaurant_main_type latitude longitude postal_code
-## 274               Italian 40.72977 -73.99914       10012
-## 285                 Other 40.72393 -73.99382       10012
-## 6                 Seafood 40.76360 -73.97895       10019
-## 260 Contemporary American 40.73443 -74.00970       10014
-## 130              American 40.75150 -73.97993       10016
-## 108            Steakhouse 40.76005 -73.96558       10022</code></pre>
+## 150     79
+## 9       76
+## 32      74
+## 3       77
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                description
+## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                               The freshest, most flavorful fish, vegetables / fruits, prepared in the subtlest way and served in an elegant, spacious setting, is why Milo&#39;s has become of one of New York&#39;s most lauded restaurant. Costas Spiliadis, owner/chef, is continuing the standard of excellence he began in Montreal, where he opened the original Milos, now a landmark. Patrons can choose their fish from an abundant market display and watch it swiftly grilled in the open kitchen.  Pre-fixe menu 5pm to 6pm  Monday to Saturday, Late night menu 10pm to closing Monday to Saturday.
+## 108                                                                                                                                                                                                                                                                                                                                                                                                                                                          Club A Steakhouse provides a truly unique dining experience. Family owned and operated the owner Bruno Selimaj or one of his three sons are onsite and greets each guest every night. Club A manages to encompass the characteristics of a traditional steak house and new world modernism that is evident in both the menu and d&lt;U+00A8&gt;&lt;U+00A6&gt;cor. The warmth paired with the distinct menu and extensive wine list make it perfect for any occasion. Please note that Club A Steakhouse will honor your Groupon reservations however OpenTable Diner Rewards points will not be received.
+## 150 &quot;At Bobby Vans 54th Street, you can expect the same great service and the same great food as our other restaurants. Tucked away in another historic restaurant location, (at one time this was the hang out spot for such stars as Frank Sinatra and the rest of the Rat Pack) there is plenty of history and untold stories behind these walls, if only they could talk. \nConveniently located just east of Park Avenue and 4 blocks north of The Waldorf-Astoria, this is where you want to be. As you walk into the restaurant you&lt;U+00A1&gt;&lt;U+00AF&gt;re greeted by our hosts and a large credenza filled with beautiful bottles of wine. Glancing to your left you overlook the spacious yet always occupied bar, where the bartenders know your name and have your drink waiting for you before you can even say hello. Separating the bar from the dining room is a glass window so you can see all the action of other diners enjoying their meals. The dining room has the good old fashioned steakhouse style with handcrafted wood walls, and F
+## 9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          A midtown classic with sprawling views of the NYC.  Located in the heart of Midtown, this steakhouse offers incredible service and great food in a beautiful three level space.  Known for having one of the city&#39;s best wine lists and bar scenes, Del Frisco&#39;s is the perfect place for small groups and parties of up to 80.
+## 32                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Zuma, the brainchild of award winning co-founder and creator, Rainer Becker, brings its internationally acclaimed style of contemporary Japanese cuisine to midtown, New York. Serving dishes designed to share and inspired by the informal dining style of izakaya; the three kitchens present authentic yet alluring options, with bold flavors and simple presentation, highlighting quality ingredients.  261 Madison Avenue 10016
+## 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ABC Kitchen with Jean-Georges: passionately committed to offering the freshest organic and local ingredients possible.ABC Kitchen presents a changing menu that is locally sourced and globally artistic in a fresh and articulate space.
+##      restaurant_main_type   latitude   longitude postal_code
+## 6                 Seafood  40.763598 -73.9789514       10019
+## 108            Steakhouse 40.7600512 -73.9655781       10022
+## 150            Steakhouse  40.759345  -73.970949       10169
+## 9              Steakhouse 40.7594248 -73.9822224       10020
+## 32       Japanese &amp; Koren 40.7504971 -73.9806384       10016
+## 3   Contemporary American 40.7378971 -73.9894995       10003</code></pre>
 <p>We’d like to join our datasets to see both the violations and the ratings. To accomplish that, we first convert all restaurants names to lower cases with <code>tolower()</code>, then strip symbols off on two datasets with <code>sub()</code> to create uniform syntax for names. After that, we used <code>sqldf</code> package to count the number of violations each restaurant has and join the two datasets together as our final dataset.</p>
 <p>We can take a glance at the final dataset.</p>
-<pre><code>##                        name                           street_address
-## 1           the musket room 265 Elizabeth St. CI New York, NY  10012
-## 2 benjamin steakhouse prime        23 E 40th St. New York, NY  10016
-## 3         club a steakhouse 240 East 58th Street New York, NY  10022
+<pre><code>##                name                           street_address
+## 1 club a steakhouse 240 East 58th Street New York, NY  10022
+## 2       abc kitchen  35 East 18th Street New York, NY  10003
+## 3             danji 346 West 52nd Street New York, NY  10019
 ##                                                          google_map
-## 1 //www.google.com/maps/search/?api=1&amp;query=40.7238560%2C-73.993735
-## 2 //www.google.com/maps/search/?api=1&amp;query=40.7514370%2C-73.979977
-## 3  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
-##   review_count          phone                            website
-## 1          768 (212) 219-0764         http://www.musketroom.com/
-## 2          356 (212) 338-0818 http://www.benjaminsteakhouse.com/
-## 3         3371 (212) 688-4190        http://clubasteakhouse.com/
-##   restaurant_type average_review food_review service_review ambience_review
-## 1   International        4.87680         4.7            4.7             4.6
-## 2        American        4.83560         4.7            4.8             4.6
-## 3      Steakhouse        4.83371         4.7            4.8             4.7
-##   value_review  price_range star_1 star_2 star_3 star_4 star_5
-## 1          4.2   $31 to $50      0      1      3     15     81
-## 2          4.3 $50 and over      0      1      4     13     82
-## 3          4.6   $31 to $50      1      1      4     10     84
-##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     description
-## 1 The Musket Room brings the spirit of New Zealand and the country&lt;U+00A1&gt;&lt;U+00AF&gt;s diverse cuisine to Manhattan&lt;U+00A1&gt;&lt;U+00AF&gt;s Nolita neighborhood. Chef and owner Matt Lambert, a New Zealand native, created a menu that charts the evolution of New Zealand cuisine, from the country&lt;U+00A1&gt;&lt;U+00AF&gt;s Old World traditions and Asian influences to its modern day dedication to local and seasonal offerings. Inspired by an era in New Zealand when adventure and discovery blossomed, The Musket Room offers a modern approach to the country&lt;U+00A1&gt;&lt;U+00AF&gt;s culinary past, serving dinner and drinks.Reservations made through Opentable will secure you a reservation in either the main dining room or garden room, where we offer both a la carte  and the short  tasting menu. The tasting menu must be booked in advance. Please let us know if you or any of your guests have an allergy or dietary restriction. We can accommodate for vegetarians with our tasting menu and al a carte for vegan diners with 24hr notice.  
-## 2                                                                                                                                                                                                              After ten years of continued success in the New York metro area, Benjamin Restaurant Group is proud to open its newest space, Benjamin Steakhouse Prime. Here, modern elegance is combined with traditional steakhouse classics, while also showcasing signature standouts from highly regarded sister property Benjamin Steakhouse. After perfecting both steakhouse and seafood concepts in their arsenal, Benjamin Restaurant Group is highlighting the grill at Prime, serving up USDA prime dry aged steaks and succulent seafood in unique ways. The 10,000 square foot space houses an expansive main dining room featuring wall mounted fireplaces. A temperature-controlled wine wall is exposed throughout the upper level which also offers five customizable private dining spaces for seating of up to 100+ guests.
-## 3                                                                                                                                                                                                                                                                                                                                                                                                                                                 Club A Steakhouse provides a truly unique dining experience. Family owned and operated the owner Bruno Selimaj or one of his three sons are onsite and greets each guest every night. Club A manages to encompass the characteristics of a traditional steak house and new world modernism that is evident in both the menu and d&lt;U+00A8&gt;&lt;U+00A6&gt;cor. The warmth paired with the distinct menu and extensive wine list make it perfect for any occasion. Please note that Club A Steakhouse will honor your Groupon reservations however OpenTable Diner Rewards points will not be received.
-##   restaurant_main_type latitude longitude postal_code violation_count
-## 1                Other 40.72393 -73.99382       10012               7
-## 2             American 40.75150 -73.97993       10016               8
-## 3           Steakhouse 40.76005 -73.96558       10022               7</code></pre>
+## 1  //www.google.com/maps/search/?api=1&amp;query=40.7605260%2C-73.96609
+## 2 //www.google.com/maps/search/?api=1&amp;query=40.7377830%2C-73.989714
+## 3 //www.google.com/maps/search/?api=1&amp;query=40.7640010%2C-73.986873
+##   review_count          phone                       website
+## 1         3371 (212) 688-4190   http://clubasteakhouse.com/
+## 2         6031 (212) 475-5829 http://www.abckitchennyc.com/
+## 3          595 (212) 586-2880      http://www.danjinyc.com/
+##         restaurant_type average_review food_review service_review
+## 1            Steakhouse        4.83371         4.7            4.8
+## 2 Contemporary American        4.76031         4.6            4.4
+## 3                Korean         4.7595         4.7            4.5
+##   ambience_review value_review price_range star_1 star_2 star_3 star_4 star_5
+## 1             4.7          4.6  $31 to $50      1      1      4     10     84
+## 2             4.6          4.1  $31 to $50      1      2      5     15     77
+## 3             4.3          4.2  $31 to $50      0      1      5     21     73
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              description
+## 1                                                                                                                                                                                                          Club A Steakhouse provides a truly unique dining experience. Family owned and operated the owner Bruno Selimaj or one of his three sons are onsite and greets each guest every night. Club A manages to encompass the characteristics of a traditional steak house and new world modernism that is evident in both the menu and d&lt;U+00A8&gt;&lt;U+00A6&gt;cor. The warmth paired with the distinct menu and extensive wine list make it perfect for any occasion. Please note that Club A Steakhouse will honor your Groupon reservations however OpenTable Diner Rewards points will not be received.
+## 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ABC Kitchen with Jean-Georges: passionately committed to offering the freshest organic and local ingredients possible.ABC Kitchen presents a changing menu that is locally sourced and globally artistic in a fresh and articulate space.
+## 3 Danji showcases authentic Korean flavors prepared with classic techniques to enhance the taste, textures, and aesthetic of each dish. We offer small but shareable portions served in multiple courses, allowing diners to enjoy each dish hot out of the kitchen. Above all, Danji, from its decor to its music, represents our idea of a great place to enjoy amazing food.At Danji and Hanjan we choose to use meat raised with no antibiotics or growth hormones. Our fish are caught wild and are not overfished and endangered. We try to use as much organic and local produce as possible and certainly do not use chemicals, such as MSG, to enhance flavors. No doubt these ingredients cost more but we believe the food we consume should be healthy and responsible as well as delicious.
+##    restaurant_main_type   latitude   longitude postal_code violation_count
+## 1            Steakhouse 40.7600512 -73.9655781       10022               7
+## 2 Contemporary American 40.7378971 -73.9894995       10003               7
+## 3      Japanese &amp; Koren 40.7640352 -73.9868366       10019               6</code></pre>
 <p>While the above final dataset contains information about restaurants which had violation records, in order to faciliate the interaction part of this project, we are going to create <code>cleaned_restaurants</code> and <code>cleaned_violations</code> datasets, so that we can 1.find each restaruant’s violation total count (including 0) 2.boil down the large original violations file so the new file only contains restaurant week’s restaurants’ specific violation information.</p>
 
 </div>

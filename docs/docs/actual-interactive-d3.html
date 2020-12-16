@@ -1,0 +1,626 @@
+<html>
+<meta charset="utf-8" />
+
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="https://d3js.org/topojson.v2.min.js"></script>
+	<style>
+		.card {
+			padding: 20;
+			border: none;
+		}
+
+		county-path {
+			stroke: #fff;
+			stroke-width: .5;
+			stroke-dasharray: 1;
+			fill: #afafaf;
+		}
+
+		div.tooltip {
+			background: lightgray;
+			border: 0.5px;
+			position: absolute;
+			text-align: center;
+			padding: 2px;
+		}
+
+		div {
+			font-family: "Gill Sans"
+		}
+
+		text {
+			font-family: "Gill Sans"
+		}
+
+		span {
+			font-family: "Gill Sans"
+		}
+
+		#controls {
+			height: 100px;
+			width: 400px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="card text-center" width="400" height="700">
+		<h1>NYC Restaurant Week Violations</h1>
+		<p>Explore the violations that restaurants from NYC Restaurant Week have gotten!</p>
+	</div>
+	<div>
+		<div id="main_container" class="container">
+			<div id="map_container" class="row text-center">
+				<div class="col">
+					<svg id="map" width="600" height="600" style="display:block;
+					margin:auto; border: 1px solid black"></svg>
+					<div class="text-center">
+						<div id='popover'><br></div>
+					</div>
+				</div>
+				<div class="col">
+					<div id="controls"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="restaurant" class="container pb-3">
+		<div id="restaurant_holder">
+			<h3>Click on a restaurant!</h3>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	const popover = d3.select("#popover");
+	const mapSVG = d3.select("#map");
+	const width = mapSVG.attr("width");
+	const height = mapSVG.attr("height");
+	const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+	const mapWidth = width - margin.left - margin.right;
+	const mapHeight = height - margin.top - margin.bottom;
+
+	// if do not want the mouse on and mouse leave events, delete them from the following function.
+	const requestData = async () => {
+		let week = await d3.csv("cleaned_restaurants.csv");
+		let inspection = await d3.csv("cleaned_violations.csv");
+		let nyc = await d3.json("nyc.geojson")
+
+		//projection, path, svg view
+		var projection = d3.geoConicConformal()
+			.parallels([33, 45])
+			.rotate([96, -39])
+			.translate([(width) / 2 - 1000, (height) / 2]).fitSize([mapWidth, mapHeight], nyc);
+		var path = d3.geoPath().projection(projection);
+		let view = mapSVG.append("g");
+
+		//supporting things for viz (tooltip, zoom transform amount, etc.)
+		let tooltip = d3.select("body")
+			.append("div").attr("class", "tooltip").style("opacity", 0);
+		let circle_r = 3;
+		let circle_stroke = 0.8;
+		let zoom_scale = 1;
+		let stroke_w = .6;
+
+		//counties
+		view.selectAll("path").data(nyc.features)
+			.enter()
+			.append("path")
+			.attr("class", "county-path")
+			.attr("id", d => d.properties.neighborhood)
+			.attr("d", path)
+			.style("fill", "#afafaf")
+			.on("mouseenter", function (event, d) {
+				d3.select(this)
+					.style("stroke-width", stroke_w * zoom_scale + 0.2)
+					.style("stroke-dasharray", 0);
+				popover.text(d.properties.neighborhood);
+			})
+			.on("mouseleave", function (event, d) {
+				d3.select(this)
+					.style("stroke-width", stroke_w)
+					.style("stroke-dasharray", 1)
+					.style("stroke", "#fff")
+				popover.html("<br>");
+			});
+
+		// Create color scale and legend
+		let maxViolations = d3.max(Object.values(week), function (d) { return parseInt(d.violation_count); });
+		console.log(maxViolations);
+		const colorScale = d3.scaleQuantile()
+			.domain([1, maxViolations])
+			.range(["#F08080", "#DC143C", "#B22222", "#8B0000"]);
+
+		const legend = d3.select("svg#map")
+			.append("svg").attr("width", 150).attr("height", 250);
+		const legendWidth = legend.attr("width");
+		const legendHeight = legend.attr("height");
+
+		legend.append("rect")
+			.attr("x", 1)
+			.attr("y", 1)
+			.attr("width", legendWidth - 1)
+			.attr("height", (legendHeight / 2) - 1)
+			.style("fill", "white")
+			.style("stroke", "black")
+			.style("stroke-width", "1px");
+
+		legend.append("text")
+			.attr("x", legendWidth * 0.5)
+			.attr("y", 18)
+			.style("text-anchor", "middle")
+			.style("font-size", "20px")
+			.text("Legend");
+
+		legend.append("text")
+			.attr("x", legendWidth * 0.5)
+			.attr("y", 35)
+			.style("text-anchor", "middle")
+			.style("font-size", "10px")
+			.text("Restaurants Without Violations");
+
+		legend.append("circle")
+			.attr("cx", legendWidth * 0.5)
+			.attr("cy", 45)
+			.attr("r", 5)
+			.style("fill", "blue");
+
+		legend.append("text")
+			.attr("x", legendWidth * 0.5)
+			.attr("y", 60)
+			.style("text-anchor", "middle")
+			.style("font-size", "10px")
+			.text("Restaurants With Violations");
+
+		const barHeight = 20;
+		const stepSize = 4;
+
+		const pixelScale = d3.scaleLinear()
+			.domain([legendWidth * 0.2, legendWidth * 0.8])
+			.range([0, maxViolations + 1]);
+
+		const barScale = d3.scaleLinear()
+			.domain([0, maxViolations + 1])
+			.range([legendWidth * 0.2, legendWidth * 0.8]);
+
+		const barAxis = d3.axisBottom(barScale);
+
+		legend.append("g")
+			.attr("class", "colorbar axis")
+			.attr("transform", "translate(" + (0) + "," + (barHeight + 70) + ")")
+			.call(barAxis);
+		let bar = legend.append("g").attr("transform", "translate(" + (0) + "," + (70) + ")")
+
+		for (let i = legendWidth * 0.2; i < legendWidth * 0.8; i = i + stepSize) {
+			bar.append("rect")
+				.attr("x", i)
+				.attr("y", 0)
+				.attr("width", stepSize)
+				.attr("height", barHeight)
+				.style("fill", colorScale(pixelScale(i))); // pixels => countData => color
+		}
+		// 
+
+
+		//restaurants
+		view.selectAll("circle")
+			.data(week)
+			.enter()
+			.append("circle")
+			.attr("transform", d => "translate(" + projection([d.longitude, d.latitude]) + ")")
+			.attr("r", circle_r)
+			.attr("fill", function (d) {
+				if (d.violation_count > 0) {
+					return colorScale(d.violation_count);
+				} else {
+					return "blue";
+				}
+			})
+			.attr("violations", function (d) { return d.violation_count; })
+			.attr("stroke", "black")
+			.attr("stroke-width", circle_stroke)
+			.on("mouseover", function (event, d) {
+				if (d3.select(this).style("opacity") !== "0") {
+					d3.select(this)
+						.transition().duration(200)
+						.attr("r", circle_r + 3 / zoom_scale);
+					tooltip.transition().duration(200)
+						.style("opacity", 0.9);
+					let html = d.name + "<br>" + "Violations: " + d.violation_count;
+					tooltip.html(html)
+						.style("left", (event.pageX + 5) + "px")
+						.style("top", (event.pageY - 20) + "px");
+					d3.select(this).style("cursor", "pointer");
+				}
+			})
+			.on("mouseout", function (event, d) {
+				if (d3.select(this).style("opacity") !== "0") {
+					d3.select(this)
+						.transition().duration(200)
+						.attr("r", circle_r);
+					tooltip.transition().duration(200)
+						.style("opacity", 0);
+					tooltip.html("");
+					d3.select(this).style("cursor", "");
+				}
+			})
+			.on("click", function (event, d) {
+				if (d3.select(this).style("opacity") !== "0") {
+					d3.selectAll("#restaurant_holder > *").remove()
+					const chart = d3.select('#chartSVG');
+					chart.selectAll("*").remove();
+					chart.remove();
+
+					let info = d3.select("#restaurant_holder").append("div")
+						.attr("class", "overflow-auto border pl-2 pt-2")
+						.style("overflow", "auto")
+						.style("height", "275");
+					info.append("h3")
+						.attr("class", "card-title")
+						.text(d.name);
+					info.append("h4").html(d.phone + "<br>" + d.street_address);
+					let reviews = ["Ambience Review:", "Average Review:", "Food Review:",
+						"Service Review:", "Value Review:"];
+					let starGenerator = d3.symbol().type(d3.symbolStar).size(100);
+					let res_stars = [[10, 12], [30, 12], [50, 12], [70, 12], [90, 12]];
+					let stars = info.append("div");
+					reviews.forEach(function (review, rev_i) {
+						let star_loc = stars.append("p").html(review)
+							.style("margin", 0).style("padding", 0);
+						let star_svg = star_loc.append("svg")
+							.attr("width", "100")
+							.attr("height", "20");
+						let get_rev = review.replace(":", "").replace(" ", "_").toLowerCase();
+						res_stars.forEach(function (star, i) {
+							let grad = star_svg.append("defs").append("linearGradient")
+								.attr("id", "grad" + rev_i + i)
+								.attr("x1", "0%").attr("x2", "100%").attr("y1", "0%").attr("y2", "0%");
+							grad.append("stop")
+								.attr("offset", Math.min(1, (d[get_rev] - i) / 1))
+								.style("stop-color", "red");
+							grad.append("stop")
+								.attr("offset", Math.min(1, (d[get_rev] - i) / 1))
+								.style("stop-color", "white");
+							star_svg.append("path")
+								.attr("transform", "translate(" + star + ")")
+								.attr("d", d3.symbol().type(d3.symbolStar).size(80))
+								.style("fill", "url(#grad" + rev_i + i + ")")
+								.style("stroke", "black")
+								.style("stroke-width", "1")
+								.style("stroke-dasharray", 0)
+								.on("mouseover", function (event) {
+									tooltip.transition().duration(200)
+										.style("opacity", 0.9);
+									let html = "# of " + (i + 1) + " star reviews: " + d["star_" + (i + 1)];
+									tooltip.html(html)
+										.style("left", (event.pageX + 5) + "px")
+										.style("top", (event.pageY - 20) + "px");
+								})
+								.on("mouseout", function () {
+									tooltip.transition().duration(200).style("opacity", 0);
+									tooltip.html("");
+								});
+						});
+					});
+					var chartData = [];
+					let crit_data = {};
+					if(d.violation_count > 0){
+						info.append("h4").html("<br>Violations:");
+						info.append("p").html("Critical violations are red, non-critical are black<br>");
+					}
+					let viol_date = "";
+					inspection.forEach(function (viol, i) {
+						if (viol.DBA.toLowerCase() === d.name.toLowerCase()) {
+							let violations_text = "";
+							if (viol_date !== viol["GRADE.DATE"]) {
+								viol_date = viol["GRADE.DATE"];
+								info.append("h5").html("Violations Date: " + viol["GRADE.DATE"])
+									.attr("id", "month" + viol["GRADE.DATE"].substring(0, 2)
+										+ viol["GRADE.DATE"].substring(6, 10));
+							}
+							violations_text = violations_text + "Violation Description: " + viol["VIOLATION.DESCRIPTION"].replace(/[Â]/g, "");
+							info.append("p")
+								.attr("id", "month" + viol["GRADE.DATE"].substring(0, 2)
+									+ viol["GRADE.DATE"].substring(6, 10))
+								.html(violations_text)
+								.style("color", function () {
+									if (viol["CRITICAL.FLAG"] === "Y") {
+										return "red";
+									}
+								});
+							// chart data collection
+							let date_text = viol["GRADE.DATE"].substring(6, 11) + '-' + viol["GRADE.DATE"].substring(0, 2);
+							if (viol["CRITICAL.FLAG"] === "Y") {
+								crit_data[date_text] = (crit_data[date_text] || 0) + 1;
+							}
+							chartData.push(date_text);
+						}
+					});
+					window.scrollTo(0, document.body.scrollHeight); //scroll to bottom
+
+					//violation trend chart
+					if (chartData.length > 0) {
+						//parse collected data
+
+						var counts = {};
+						chartData.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+
+						var finalList = [];
+						for (const date of Object.keys(counts)) {
+							finalList.push({ 'date': new Date(date + '-01'), 'value': counts[date], 'crit': crit_data[date] });
+						};
+
+
+						//implement the chart
+						const chartMargin = { left: 40, right: 10, top: 50, bottom: 70 };
+						const chartWidth = 350 - chartMargin.left - chartMargin.right;
+						const chartHeight = 500 - chartMargin.top - chartMargin.bottom;
+
+
+						var chartxScale = d3.scaleTime()
+							.domain(d3.extent(finalList, d => d.date))
+							.range([0, chartWidth]);
+
+						if (d.name == 'Obao') {
+							var chartyScale = d3.scaleLinear().domain([0, 30]).range([chartHeight, 0]);
+						} else if (d.name == 'Il Postino' || d.name == 'Brasserie Cognac') {
+							var chartyScale = d3.scaleLinear().domain([0, 14]).range([chartHeight, 0]);
+						}
+						else {
+							var chartyScale = d3.scaleLinear().domain([0, 10]).range([chartHeight, 0]);
+						};
+
+						var chartline = d3.line()
+							.x(d => chartxScale(d.date)) // set the x values for the line generator
+							.y(d => chartyScale(d.value)); // set the y values for the line generator
+
+						var chartSVG = d3.select("div#controls").append("svg")
+							.attr("width", 350)
+							.attr("height", 500)
+							.attr("id", "chartSVG")
+							.append("g")
+							.attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
+						d3.select("#click_help").remove();
+						let click_text = d3.select("div#controls").append("p")
+							.attr("id", "click_help")
+							.attr("class", "text-center").html("Click on each dot to see the violations!");
+						click_text.transition().duration(5000).style("opacity", 0);
+						// chart title
+						chartSVG.append("text")
+							.attr("x", chartWidth / 2)
+							.attr("y", -5)
+							.text(d.name + " Violation Trend Chart")
+							.style("text-anchor", "middle");
+
+						// X axis label   
+						chartSVG.append("text")
+							.attr("x", chartWidth / 2)
+							.attr("y", chartyScale(0) + 65)
+							.style("text-anchor", "middle")
+							.text("Date");
+
+						// Y axis label
+						chartSVG.append("text")
+							.attr("transform", "rotate(-90)")
+							.attr("y", -40)
+							.attr("x", -160)
+							.attr("dy", "1em")
+							.style("text-anchor", "middle")
+							.text("Number of violations");
+
+						chartSVG.append("g")
+							// .attr("class", "x axis")
+							.attr("transform", "translate(0," + chartHeight + ")")
+							.call(d3.axisBottom(chartxScale).tickFormat(d3.timeFormat("%Y-%b")))
+							.selectAll("text")
+							.style("text-anchor", "end")
+							.attr("dx", "-.8em")
+							.attr("dy", ".15em")
+							.attr("transform", "rotate(-65)");
+
+						chartSVG.append("g")
+							// .attr("class", "y chartyScale")
+							.call(d3.axisLeft(chartyScale));
+
+
+						const chartPath = chartSVG.append("path")
+							.datum(finalList)
+							.attr("class", "line")
+							.attr("fill", "none")
+							.attr("stroke", "steelblue")
+							.attr("stroke-width", 1.5)
+							.attr("stroke-linejoin", "round")
+							.attr("stroke-linecap", "round")
+							.attr("d", chartline);
+
+						const totalLength = chartPath.node().getTotalLength();
+
+						chartPath.attr("stroke-dasharray", totalLength+" "+totalLength)
+							.attr("stroke-dashoffset", totalLength)
+							.transition()
+								.duration(1000)
+								.attr("stroke-dashoffset", 0);
+
+
+
+						chartSVG.selectAll(".dot")
+							.data(finalList)
+							.enter().append("circle")
+							.attr("class", "dot")
+							.attr("cx", d => chartxScale(d.date))
+							.attr("cy", d => chartyScale(d.value))
+							.attr("r", 4)
+							.attr("fill", function (d) {
+								if (d.crit > 0) {
+									return "red";
+								}
+								return "black";
+							})
+							.attr("stroke", "black")
+							.attr("stroke-width", 0.5)
+							.on("mouseover", function (event) {
+								d3.select(this).transition().duration(200).attr("r", 6);
+								d3.select(this).style("cursor", "pointer");
+								tooltip.transition().duration(200)
+									.style("opacity", 0.9);
+								let html = "red is for critical violations, black is non-critical";
+								tooltip.html(html)
+									.style("left", (event.pageX + 5) + "px")
+									.style("top", (event.pageY - 20) + "px");
+							})
+							.on("mouseout", function () {
+								d3.select(this).transition().duration(200).attr("r", 4);
+								d3.select(this).style("cursor", "");
+								tooltip.html("").style("opacity", 0);
+							})
+							.on("click", function (event, d) {
+								let date_string = d.date.toLocaleDateString("en-US");
+								let id = ((parseInt(date_string.substring(0, 2)
+									.replace("/", "")) % 12) + 1).toString() +
+									date_string.slice(-4);
+								if (id.length !== 6) { id = "0" + id; }
+								if (id.substring(0, 2) === "01") { id = id.substring(0, 2) + (parseInt(id.slice(-4)) + 1); }
+								document.getElementById("month" + id).scrollIntoView();
+							});
+
+					};
+				}
+
+			});
+
+		var zoom = d3.zoom()
+			.scaleExtent([1, 8])
+			.translateExtent([[-50, 50], [mapWidth, mapHeight]])
+			.on("zoom", zoomed);
+
+		view.call(zoom);
+		view.call(zoom.transform, d3.zoomIdentity.translate(-380, -300).scale(3));
+
+		function zoomed(event) {
+			let transform = event.transform;
+			zoom_scale = transform.k;
+			view.attr("transform", transform.toString()); //drag and zoom
+
+			view.selectAll("circle")
+				.attr("r", function () {
+					circle_r = 3 / zoom_scale;
+					return circle_r;
+				})
+				.attr("stroke-width", function () {
+					circle_stroke = 0.8 / zoom_scale;
+					return circle_stroke;
+				});
+			view.selectAll(".county-path")
+				.style("stroke-width", function () {
+					stroke_w = .6 / transform.k;
+					return stroke_w;
+				})
+		}
+
+		var appliedFilters = {};
+
+		function applyFilters(d) {
+			let meetsCriteria = true;
+			Object.values(appliedFilters).forEach(filter => {
+				meetsCriteria = filter(d) && meetsCriteria;
+			});
+			return meetsCriteria;
+		}
+
+		function updateAppliedFilters() {
+			mapSVG.selectAll("circle")
+				.data(week)
+				.style("opacity", d => (applyFilters(d)) ? 1.0 : 0.0)
+		}
+
+		updateAppliedFilters();
+
+		function makeSlider(property) {
+			let values = week.map(d => d[property]);
+
+			let maxViolations = d3.max(Object.values(week), function (d) { return parseInt(d.violation_count); });
+
+			let sliderWidth = parseFloat(d3.select("div#controls").style("width"));
+			let sliderHeight = 75;
+
+			let xScale = d3.scaleLinear().domain([0, maxViolations]).range([10, sliderWidth - 10]);
+			let xAxis = d3.axisBottom(xScale).tickFormat(d3.format(".2s"));
+
+			let container = d3.select("div#controls").append("div").attr("class", "control");
+			let label = container.append("div").text("Violations Slider");
+			let canvas = container.append("svg")
+				.attr("width", sliderWidth)
+				.attr("height", sliderHeight)
+				.style("display", "block")
+				.style("margin", "auto");
+			let histoLayer = canvas.append("g");
+			let axisLayer = canvas.append("g")
+				.attr("transform", "translate(" + 0 + "," + (sliderHeight - 18) + ")")
+				.call(xAxis);
+
+			let numBins = 10;
+			let counts = d3.histogram().domain([0, maxViolations]).thresholds(numBins)(values);
+
+			let yScale = d3.scaleLinear().domain(d3.extent(counts, d => d.length))
+				.range([sliderHeight - 18, 5]);
+
+
+			counts.forEach(d => {
+				d.xM = (d.x0 + d.x1) / 2.0; // compute midpoints
+			});
+
+			counts.unshift({ xM: counts[0].x0, length: counts[0].length });
+			counts.push({ xM: counts[counts.length - 1].x1, length: counts[counts.length - 1].length });
+
+			let area = d3.area().x(d => xScale(d.xM))
+				.y0(yScale(0))
+				.y1(d => yScale(d.length))
+				.curve(d3.curveNatural);
+
+			histoLayer.append("path").datum(counts)
+				.attr("class", "area")
+				.attr("d", area)
+				.attr("fill", "gray");
+
+			var brush = d3.brushX()
+				.extent([[10, 0], [sliderWidth - 10, sliderHeight - 18]])
+				.on("brush end", brushMoved);
+
+			function brushMoved(event) {
+
+				if (event.selection !== null) {
+
+					let start = xScale.invert(event.selection[0]);
+					let end = xScale.invert(event.selection[1]);
+
+					let newFilter = d => d[property] >= start && d[property] <= end;
+					appliedFilters[property] = newFilter;
+				}
+
+				else {
+
+					let newFilter = function () { return true; }
+					appliedFilters[property] = newFilter;
+
+				}
+
+				updateAppliedFilters();
+			}
+
+			canvas.append("g").attr("class", "brush")
+				.call(brush);
+		}
+
+		makeSlider("violation_count");
+
+	}
+
+	requestData();
+</script>
+
+</html>

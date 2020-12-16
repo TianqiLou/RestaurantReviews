@@ -49,6 +49,6 @@ cleaned_violations_df <-
   FROM violations v
   WHERE v.DBA IN (SELECT d.name FROM data AS d)')
 
-write.csv(cleaned_restaurants_df, './cleaned_restaurants.csv', row.names=FALSE)
-write.csv(cleaned_violations_df, './cleaned_violations.csv', row.names=FALSE)
+write.csv(cleaned_restaurants_df, './docs/cleaned_restaurants.csv', row.names=FALSE)
+write.csv(cleaned_violations_df, './docs/cleaned_violations.csv', row.names=FALSE)
 ```

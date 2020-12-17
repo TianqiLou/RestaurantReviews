@@ -100,9 +100,16 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Results</h1>
+<p>First, we’d like to see what are the main types of restaurants in NYC Restaurant Week. The following is a plot of the number count for each restaurant type.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Not to our surprise, Italian restaurants are the most common restaurants in NYC Restaurant Week, followed by American and Steakhouse.</p>
+<p>Then, we try to explore the relationship between restaurant average rating and inspection violation counts. To do that, we used <code>violation</code> created in data transformation, which contains both the restaurant ratings and the number of violations to plot the following scatterplot. Each restaurant is colored by their type.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="960" /></p>
+<p>There is a major cluster in the bottom-right section of the graph, from average review of 4.4 to 4.75, and violation count from 4 to 8. This cluster represents that most of the restaurants attending restaurant week have relatively high ratings and few violations. However, the graph does not show any linear relationship between average rating and violations. It is also noticeable that there is an outlying restaurant with many violations but relatively low rating, so we think customers should pay special attention to that restaurant. We also labeled the worst rated restaurant in our data.</p>
+<p>Meanwhile, we are interested in what types of restaurants have the most violations. So we plotted the following Cleveland dot plot.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>As seen from above Southeast Asian restaurants have the most average violations over all the restaurant. We believe it is a reasonable result given the size of our data set and that Obao, the Southeast Asian restaurant, has abnormally more violation than other restaurants. Other than that, Seafood and Mexican restaurants have the second and third most violations. Most types of restaurants have around 5 to 10 violations.</p>
+<p>By the way, we are giving a big shoutout to Italian restaurants. They have the most numbers of restaurants, but lower average violations to most types of restaurants. Good job keeping that dishes clean, Italian restaurants!</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>

@@ -2,41 +2,51 @@
 
 ```{r}
 df <- read.csv('finaldf.csv',encoding = "UTF-8")
+ot <- read.csv('opentable.csv', encoding = "UTF-8")
 ```
+
+First, we'd like to see what are the main types of restaurants in NYC Restaurant Week. The following is a plot of the number count for each restaurant type.
 
 ```{r}
 library(ggplot2)
 library(tidyverse)
 
-ggplot(df, aes(x = fct_infreq(restaurant_main_type))) + 
+ggplot(ot, aes(x = fct_relevel(fct_rev(fct_infreq(restaurant_main_type)),'Other'))) + 
   geom_histogram(stat = 'count', binwidth=1, fill='lightblue') +
   theme_bw() +
-  theme(axis.text.x=element_text(angle=90,hjust=1)) +
+  coord_flip()+
   ggtitle("Number of each restaurant type") +
   labs(x = 'restaurant type')
   
 ```
 
+Not to our surprise, Italian restaurants are the most common restaurants in NYC Restaurant Week, followed by American and Steakhouse. 
 
-
+Then, we try to explore the relationship between restaurant average rating and inspection violation counts. To do that, we used `violation` created in data transformation, which contains both the restaurant ratings and the number of violations to plot the following scatterplot. Each restaurant is colored by their type.
 
 ```{r, fig.width=10}
 ggplot(df, aes(x=average_review,y=violation_count, color = restaurant_main_type)) +
   geom_point() +
-  ggtitle("Average review vs. Violation count")
+  ggtitle("Average rating vs. Violation count")+
+  labs(x='average_rating') +
+  geom_label(aes(4.3,34,label='obao'),color='red',size = 5, alpha = 0.5) +
+  geom_label(aes(3.88,6,label='brasserie seoul'),color='red',size = 5, alpha = 0.5)
 
 ```
 
+There is a major cluster in the bottom-right section of the graph, from average review of 4.4 to 4.75, and violation count from 4 to 8. This cluster represents that most of the restaurants attending restaurant week have relatively high ratings and few violations. However, the graph does not show any linear relationship between average rating and violations. It is also noticeable that there is an outlying restaurant with many violations but relatively low rating, so we think customers should pay special attention to that restaurant. We also labeled the worst rated restaurant in our data.
+
+Meanwhile, we are interested in what types of restaurants have the most violations. So we plotted the following Cleveland dot plot.
+
 ```{r}
 rest_type <- aggregate(df$violation_count, by= list(df$restaurant_main_type), FUN =mean)
-#rest_type$count <- 
 rest_count <- aggregate(df$restaurant_type, by= list(df$restaurant_main_type), FUN = length)
 rest_type <- merge(rest_type, rest_count, by = 'Group.1',all = TRUE)
 
 colors <- c('avg'='red','count'='blue')
 
 rest_type = rest_type %>%
-  mutate(Type = fct_reorder(Group.1, x.x)) 
+  mutate(Type = fct_relevel(fct_reorder(Group.1, x.x),'Other')) 
   ggplot(rest_type,(aes(y=Type))) +
   geom_point(aes(x=x.x),color='red') +
   ggtitle('Average violation counts by type') +
@@ -49,13 +59,18 @@ rest_type = rest_type %>%
 
 ```
 
+As seen from above Southeast Asian restaurants have the most average violations over all the restaurant. We believe it is a reasonable result given the size of our data set and that Obao, the Southeast Asian restaurant, has abnormally more violation than other restaurants. Other than that, Seafood and Mexican restaurants have the second and third most violations. Most types of restaurants have around 5 to 10 violations. 
+
+By the way, we are giving  a big shoutout to Italian restaurants. They have the most numbers of restaurants, but lower average violations to most types of restaurants. Good job keeping that dishes clean, Italian restaurants!
+
+
 ```{r}
 library(ggmosaic) 
 library(colorRamps)
 
 
 ggplot(data = df) +
-  geom_mosaic(aes(x=product(price_range),fill=restaurant_main_type)) +
+  geom_mosaic(aes(x=product(price_range),fill=restaurant_main_type), alpha= 0.8) +
   scale_fill_manual(values =  primary.colors(21)) +
   ggtitle('Price range of each restaurant type') +
   labs(x='price range',y='restaurant type') #+
@@ -90,10 +105,10 @@ df_man <- df_man %>%
 
 avg_violation <- aggregate(df_man$violation_count, by = list(df_man$Neighborhood), FUN = mean)
 
-ggplot(avg_violation,aes(reorder(Group.1,-x,sum),x))+
+ggplot(avg_violation,aes(fct_rev(reorder(Group.1,-x,sum)),x))+
   geom_col(binwidth=1, fill='lightblue') +
   theme_bw() +
-  theme(axis.text.x=element_text(angle=60,hjust=1)) +
+  coord_flip() +
   ggtitle("Average vioaltion count by neighborhood") +
   labs(x = 'Neighborhood',y = 'average violation count')
 
@@ -103,10 +118,10 @@ ggplot(avg_violation,aes(reorder(Group.1,-x,sum),x))+
 df_man %>%
   group_by(Neighborhood, restaurant_main_type) %>%
   summarize(count = n()) %>%
-  ggplot(aes(fct_relevel(Neighborhood),count)) +
-  geom_bar(aes(fill = restaurant_main_type), position = "stack", stat = "identity") +
+  ggplot(aes(fct_rev(fct_infreq(Neighborhood)),count)) +
+  geom_bar(aes(fill = restaurant_main_type), position = "stack", stat = "identity",alpha = 0.8) +
   scale_fill_manual(values =  primary.colors(21)) +
-  theme(axis.text.x=element_text(angle=60,hjust=1)) +
+  coord_flip() +
   ggtitle('Total vioaltion in each neighborhood by restaurant type') +
   labs(x='Neighborhood')
 ```

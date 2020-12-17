@@ -8,17 +8,12 @@
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
 	<style>
-		.card {
-			padding: 20;
-			border: none;
-		}
-		
-		body {
-      -moz-transform: scale(0.5, 0.5); /* Moz-browsers */
-      zoom: 0.5; /* Other non-webkit browsers */
-      zoom: 50%; /* Webkit browsers */
-    }
 
+		body {
+		    -moz-transform: scale(0.5, 0.5); /* Moz-browsers */
+		    zoom: 0.5; /* Other non-webkit browsers */
+		    zoom: 50%; /* Webkit browsers */
+		}
 		county-path {
 			stroke: #fff;
 			stroke-width: .5;
@@ -48,23 +43,23 @@
 
 		#controls {
 			height: 100px;
-			width: 400px;
+			width: 200px;
 		}
 	</style>
 
 </head>
 
 <body>
-	<div class="card text-center" width="400" height="700">
+	<div class="card text-left" width="400" height="700">
 		<h1>NYC Restaurant Week Violations</h1>
 		<p>Explore the violations that restaurants from NYC Restaurant Week have gotten!</p>
 	</div>
 	<div>
-		<div id="main_container" class="container">
-			<div id="map_container" class="row text-center">
-				<div class="col">
-					<svg id="map" width="600" height="600" style="display:block;
-					margin:auto; border: 1px solid black"></svg>
+		<div id="main_container" class="container" style="margin:0">
+			<div id="map_container" class="row text-left">
+				<div>
+					<svg id="map" width="400" height="400" 
+					style="margin:0; border: 1px solid black"></svg>
 					<div class="text-center">
 						<div id='popover'><br></div>
 					</div>
@@ -75,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="restaurant" class="container pb-3">
+	<div id="restaurant" class="container" style="margin:0">
 		<div id="restaurant_holder">
 			<h3>Click on a restaurant!</h3>
 		</div>
@@ -100,7 +95,9 @@
 		//projection, path, svg view
 		var projection = d3.geoConicConformal()
 			.parallels([33, 45])
-			.rotate([96, -39])
+			// .parallels([50, 67])
+			// .rotate([96, -39])
+			.rotate([78, -20])
 			.translate([(width) / 2 - 1000, (height) / 2]).fitSize([mapWidth, mapHeight], nyc);
 		var path = d3.geoPath().projection(projection);
 		let view = mapSVG.append("g");
@@ -137,7 +134,6 @@
 
 		// Create color scale and legend
 		let maxViolations = d3.max(Object.values(week), function (d) { return parseInt(d.violation_count); });
-		console.log(maxViolations);
 		const colorScale = d3.scaleQuantile()
 			.domain([1, maxViolations])
 			.range(["#F08080", "#DC143C", "#B22222", "#8B0000"]);
@@ -363,9 +359,9 @@
 
 
 						//implement the chart
-						const chartMargin = { left: 40, right: 10, top: 50, bottom: 70 };
-						const chartWidth = 350 - chartMargin.left - chartMargin.right;
-						const chartHeight = 500 - chartMargin.top - chartMargin.bottom;
+						const chartMargin = { left: 5, right: 0, top: 20, bottom: 20 };
+						const chartWidth = 200 - chartMargin.left - chartMargin.right;
+						const chartHeight = 200 - chartMargin.top - chartMargin.bottom;
 
 
 						var chartxScale = d3.scaleTime()
@@ -386,8 +382,8 @@
 							.y(d => chartyScale(d.value)); // set the y values for the line generator
 
 						var chartSVG = d3.select("div#controls").append("svg")
-							.attr("width", 350)
-							.attr("height", 500)
+							.attr("width", 200)
+							.attr("height", 200)
 							.attr("id", "chartSVG")
 							.append("g")
 							.attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");

@@ -22,32 +22,22 @@ ggplot(ot, aes(x = fct_relevel(fct_rev(fct_infreq(restaurant_main_type)),'Other'
 
 Not to our surprise, Italian restaurants are the most common restaurants in NYC Restaurant Week, followed by American and Steakhouse. 
 
+How expensive are these restaurants? To explore this question, we plotted the following mosaic plot.
 
-
-```{r,fig.width=9}
-library(ggmosaic) 
-library(colorRamps)
-
-
-ggplot(data = df) +
-  geom_mosaic(aes(x=product(price_range),fill=restaurant_main_type), alpha= 0.8) +
-  scale_fill_manual(values =  primary.colors(21)) +
-  ggtitle('Price range of each restaurant type') +
-  labs(x='price range',y='restaurant type') #+
-  #scale_x_discrete(limits = c('<30','30-50','>50'),
-                   #labels=c('$30 and under','$31 to $50','$50 and over'))
-  
-
-```
-
-```{r}
+```{r,fig.height=6}
 library(vcd)
 library(vcdExtra)
 
 mosaic(price_range ~ restaurant_main_type, data = df,rot_labels=c(0,90,0,0) ,
-       highlighting_fill = c("sandybrown","lightblue","saddlebrown")) 
+       highlighting_fill = c("sandybrown","lightblue","saddlebrown"),
+       main = 'Price range of each restaurant type',
+       gp_varnames = gpar(fontsize = 14, fontface = 1),
+       gp_labels = gpar(fontsize = 10),
+       labeling_args = list(offset_varnames = c(left = 2, top=0))) 
 
 ```
+
+We can see that most of the restaurants attending restaurant week cost \$30 to \$50 per person. Surprisingly, French restaurants are not more expensive than other types of restaurants. In fact, there are bit any French restaurants costing more than $50 per person, whereas American restaurants have the most fancy restaurants.
 
 Then, we try to explore the relationship between restaurant average rating and inspection violation counts. To do that, we used `violation` created in data transformation, which contains both the restaurant ratings and the number of violations to plot the following scatterplot. Each restaurant is colored by their type.
 
@@ -90,6 +80,7 @@ As seen from above Southeast Asian restaurants have the most average violations 
 
 By the way, we are giving  a big shoutout to Italian restaurants. They have the most numbers of restaurants, but lower average violations to most types of restaurants. Good job keeping that dishes clean, Italian restaurants!
 
+After looking at the cuisine pattern of the violations, we'd like to see if there are any geographical patters. That is, which neighborhoods have the most violations.
 
 ```{r}
 library(dplyr)
@@ -125,7 +116,13 @@ ggplot(avg_violation,aes(fct_rev(reorder(Group.1,-x,sum)),x))+
 
 ```
 
+From the plot above, it is clear that Central Harlem has the most average violations among all neighborhoods, followed by Greenwich Village and Soho. Upper East Side, with no doubt, has the cleanest and safest restaurant.
+
+If we combine restaurant types into the each neighborhood, we get the following graph.
+
 ```{r,fig.height=6}
+library(colorRamps)
+
 df_man %>%
   group_by(Neighborhood, restaurant_main_type) %>%
   summarize(count = n()) %>%
@@ -133,10 +130,8 @@ df_man %>%
   geom_bar(aes(fill = restaurant_main_type), position = "stack", stat = "identity",alpha = 0.8) +
   scale_fill_manual(values =  primary.colors(21)) +
   coord_flip() +
-  ggtitle('Total vioaltion in each neighborhood by restaurant type') +
+  ggtitle('Total restaurants in each neighborhood by type') +
   labs(x='Neighborhood')
 ```
 
-```{r}
-
-```
+From the new graph, we are able to get a lot of new information. For example, Central Harlem has the most average violation count because there is only one restaurant there and it had a lot of violations. We are also able to see the restaurant diversity in each neighborhood. Chelsea and Clinton, for instance, has the most total violations, but it also consists of the most restaurant types, almost every type we find. So if you are looking for diversity of tastes, Chelsea and Clinton can be a good neighborhood to go.

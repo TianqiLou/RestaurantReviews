@@ -146,9 +146,9 @@
 ##                    0                    0                    0 
 ##            longitude          postal_code 
 ##                    0                    1</code></pre>
-<p>There are 5 NA’s in each review columns. To find out where they are, we plot the missing patterns in data by rows with <code>mi</code> package.</p>
+<p>There are 3 NA’s in website column. To find out where they are, we plot the missing patterns in data by rows with <code>mi</code> package.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>From the plot above, we can see that all 10 missing values are in the same rows, so we decided to remove these rows by using <code>na.omit()</code> function. And we check again to make sure there are no NA’s in the dataset.</p>
+<p>From the plot above, we are able to detect all the missing values are. Since it only consist of a small part of our data, we decided to remove these rows by using <code>na.omit()</code> function. And we check again to make sure there are no NA’s in the dataset.</p>
 <pre><code>##                 name       street_address           google_map 
 ##                    0                    0                    0 
 ##         review_count                phone              website 
@@ -187,6 +187,7 @@
 ## 4                   0     A 06/07/2013
 ## 5             Y     9     A 02/11/2014
 ## 6             N     9     A 02/11/2014</code></pre>
+<p>Here are the missing values.</p>
 <pre><code>##                   DBA VIOLATION.DESCRIPTION         CRITICAL.FLAG 
 ##                     0                  1755                  1755 
 ##                 SCORE                 GRADE            GRADE.DATE 

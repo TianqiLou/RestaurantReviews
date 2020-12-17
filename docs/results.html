@@ -103,17 +103,22 @@
 <p>First, we’d like to see what are the main types of restaurants in NYC Restaurant Week. The following is a plot of the number count for each restaurant type.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Not to our surprise, Italian restaurants are the most common restaurants in NYC Restaurant Week, followed by American and Steakhouse.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="864" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>How expensive are these restaurants? To explore this question, we plotted the following mosaic plot.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>We can see that most of the restaurants attending restaurant week cost $30 to $50 per person. Surprisingly, French restaurants are not more expensive than other types of restaurants. In fact, there are bit any French restaurants costing more than $50 per person, whereas American restaurants have the most fancy restaurants.</p>
 <p>Then, we try to explore the relationship between restaurant average rating and inspection violation counts. To do that, we used <code>violation</code> created in data transformation, which contains both the restaurant ratings and the number of violations to plot the following scatterplot. Each restaurant is colored by their type.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="960" /></p>
 <p>There is a major cluster in the bottom-right section of the graph, from average review of 4.4 to 4.75, and violation count from 4 to 8. This cluster represents that most of the restaurants attending restaurant week have relatively high ratings and few violations. However, the graph does not show any linear relationship between average rating and violations. It is also noticeable that there is an outlying restaurant with many violations but relatively low rating, so we think customers should pay special attention to that restaurant. We also labeled the worst rated restaurant in our data.</p>
 <p>Meanwhile, we are interested in what types of restaurants have the most violations. So we plotted the following Cleveland dot plot.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>As seen from above Southeast Asian restaurants have the most average violations over all the restaurant. We believe it is a reasonable result given the size of our data set and that Obao, the Southeast Asian restaurant, has abnormally more violation than other restaurants. Other than that, Seafood and Mexican restaurants have the second and third most violations. Most types of restaurants have around 5 to 10 violations.</p>
 <p>By the way, we are giving a big shoutout to Italian restaurants. They have the most numbers of restaurants, but lower average violations to most types of restaurants. Good job keeping that dishes clean, Italian restaurants!</p>
+<p>After looking at the cuisine pattern of the violations, we’d like to see if there are any geographical patters. That is, which neighborhoods have the most violations.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>From the plot above, it is clear that Central Harlem has the most average violations among all neighborhoods, followed by Greenwich Village and Soho. Upper East Side, with no doubt, has the cleanest and safest restaurant.</p>
+<p>If we combine restaurant types into the each neighborhood, we get the following graph.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>From the new graph, we are able to get a lot of new information. For example, Central Harlem has the most average violation count because there is only one restaurant there and it had a lot of violations. We are also able to see the restaurant diversity in each neighborhood. Chelsea and Clinton, for instance, has the most total violations, but it also consists of the most restaurant types, almost every type we find. So if you are looking for diversity of tastes, Chelsea and Clinton can be a good neighborhood to go.</p>
 
 </div>
             </section>

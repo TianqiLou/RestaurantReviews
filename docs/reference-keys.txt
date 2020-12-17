@@ -3,5 +3,9 @@ data-sources
 missing-values
 data-transformation
 results
+what-are-the-restaurant-types
+how-are-average-rating-and-inspection-violation-counts-related
+which-restaurants-have-the-most-violations
+where-are-these-restaurants
 interactive-component
 conclusion

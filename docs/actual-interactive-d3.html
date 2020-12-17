@@ -10,9 +10,9 @@
 	<style>
 
 		body {
-		    -moz-transform: scale(0.5, 0.5); /* Moz-browsers */
-		    zoom: 0.5; /* Other non-webkit browsers */
-		    zoom: 50%; /* Webkit browsers */
+		    -moz-transform: scale(0.75, 0.75); /* Moz-browsers */
+		    zoom: 0.75; /* Other non-webkit browsers */
+		    zoom: 75%; /* Webkit browsers */
 		}
 		county-path {
 			stroke: #fff;
@@ -43,7 +43,7 @@
 
 		#controls {
 			height: 100px;
-			width: 200px;
+			width: 230px;
 		}
 	</style>
 
@@ -64,7 +64,7 @@
 						<div id='popover'><br></div>
 					</div>
 				</div>
-				<div class="col">
+				<div>
 					<div id="controls"></div>
 				</div>
 			</div>
@@ -359,7 +359,7 @@
 
 
 						//implement the chart
-						const chartMargin = { left: 5, right: 0, top: 20, bottom: 20 };
+						const chartMargin = { left: 35, right: 0, top: 30, bottom: 20 };
 						const chartWidth = 200 - chartMargin.left - chartMargin.right;
 						const chartHeight = 200 - chartMargin.top - chartMargin.bottom;
 
@@ -382,8 +382,8 @@
 							.y(d => chartyScale(d.value)); // set the y values for the line generator
 
 						var chartSVG = d3.select("div#controls").append("svg")
-							.attr("width", 200)
-							.attr("height", 200)
+							.attr("width", 250)
+							.attr("height", 250)
 							.attr("id", "chartSVG")
 							.append("g")
 							.attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
@@ -395,9 +395,11 @@
 						// chart title
 						chartSVG.append("text")
 							.attr("x", chartWidth / 2)
-							.attr("y", -5)
+							.attr("y", -8)
 							.text(d.name + " Violation Trend Chart")
-							.style("text-anchor", "middle");
+							.style("text-anchor", "middle")
+							.style("font-size", "15px")
+
 
 						// X axis label   
 						chartSVG.append("text")
@@ -409,8 +411,8 @@
 						// Y axis label
 						chartSVG.append("text")
 							.attr("transform", "rotate(-90)")
-							.attr("y", -40)
-							.attr("x", -160)
+							.attr("y", -45)
+							.attr("x", -80)
 							.attr("dy", "1em")
 							.style("text-anchor", "middle")
 							.text("Number of violations");
@@ -554,12 +556,14 @@
 			let xAxis = d3.axisBottom(xScale).tickFormat(d3.format(".2s"));
 
 			let container = d3.select("div#controls").append("div").attr("class", "control");
-			let label = container.append("div").text("Violations Slider");
+			let label = container.append("div")
+					.text("Violations Slider")
+					.style("margin-left", "10");
 			let canvas = container.append("svg")
 				.attr("width", sliderWidth)
 				.attr("height", sliderHeight)
 				.style("display", "block")
-				.style("margin", "auto");
+				.style("margin-left", "10");
 			let histoLayer = canvas.append("g");
 			let axisLayer = canvas.append("g")
 				.attr("transform", "translate(" + 0 + "," + (sliderHeight - 18) + ")")
